@@ -20,6 +20,7 @@ class User extends Authenticatable
 
     const TYPE_ADMIN = 'admin';
     const TYPE_REGULAR_ADMIN = 'regular_admin';
+
     const PROPERTY_MANAGER = 'property_manager';
     const OWNER = 'owner';
     const TENANT = 'tenant';
@@ -167,6 +168,25 @@ class User extends Authenticatable
     public function isRegularAdmin()
     {
         return $this->type == self::TYPE_REGULAR_ADMIN;
+    }
+
+    public function isTenant()
+    {
+        return $this->type == self::TENANT;
+    }
+     public function isOwner()
+    {
+        return $this->type == self::OWNER;
+    }
+
+    public function isAccountant()
+    {
+        return $this->type == self::ACCOUNTANT;
+    }
+
+    public function isPropertyManager()
+    {
+        return $this->type == self::PROPERTY_MANAGER;
     }
 
     /**

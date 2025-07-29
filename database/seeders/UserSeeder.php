@@ -18,25 +18,32 @@ class UserSeeder extends Seeder
         User::truncate();
         User::insert([
             [
-                'first_name' => 'Angelo',
-                'last_name' => 'Serenuela',
-                'email' => 'angelo.sytian@gmail.com',
+                'first_name' => 'Ryan Vergel',
+                'last_name' => 'Hojilla',
+                'email' => 'yanz.sytian@gmail.com',
                 'password' => Hash::make('admin123'),
                 'type' => User::TYPE_ADMIN,
                 'created_by' => '1'
             ],
-
             [
-                'first_name' => 'Property',
-                'last_name' => 'Manager',
-                'email' => 'property.manager@gmail.com',
+                'first_name' => 'Barlaw Kenneth',
+                'last_name' => 'Sytian',
+                'email' => 'kenneth@sytian-productions.com',
                 'password' => Hash::make('admin123'),
-                'type' => User::PROPERTY_MANAGER,
+                'type' => User::TYPE_ADMIN,
+                'created_by' => '1'
+            ],
+            [
+                'first_name' => 'Regular',
+                'last_name' => 'Admin',
+                'email' => 'regular.admin@gmail.com',
+                'password' => Hash::make('admin123'),
+                'type' => User::TYPE_REGULAR_ADMIN,
                 'created_by' => '1'
             ],
             [
                 'first_name' => 'Tenant',
-                'last_name' => 'Tenant',
+                'last_name' => 'tenant',
                 'email' => 'tenant@gmail.com',
                 'password' => Hash::make('admin123'),
                 'type' => User::TENANT,
@@ -45,20 +52,30 @@ class UserSeeder extends Seeder
 
             [
                 'first_name' => 'Owner',
-                'last_name' => 'Owner',
+                'last_name' => 'ownder',
                 'email' => 'owner@gmail.com',
                 'password' => Hash::make('admin123'),
                 'type' => User::OWNER,
                 'created_by' => '1'
             ],
+
             [
-                'first_name' => 'Accountant',
-                'last_name' => 'Accountant',
+                'first_name' => 'Property',
+                'last_name' => 'Manager',
+                'email' => 'propertymanager@gmail.com',
+                'password' => Hash::make('admin123'),
+                'type' => User::PROPERTY_MANAGER,
+                'created_by' => '1'
+            ],
+            [
+                'first_name' => 'accountant',
+                'last_name' => 'accountant',
                 'email' => 'accountant@gmail.com',
                 'password' => Hash::make('admin123'),
                 'type' => User::ACCOUNTANT,
                 'created_by' => '1'
             ],
+
         ]);
     }
 }
