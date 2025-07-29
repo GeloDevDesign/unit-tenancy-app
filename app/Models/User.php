@@ -23,14 +23,14 @@ class User extends Authenticatable
     const PROPERTY_MANAGER = 'property_manager';
     const OWNER = 'owner';
     const TENANT = 'tenant';
-    const ACCOUNTING = 'accounting';
+    const ACCOUNTANT = 'accountant';
 
     public static $types = [
         self::TYPE_ADMIN => 'Super Admin',
         self::TYPE_REGULAR_ADMIN => 'Regular Admin',
         self::PROPERTY_MANAGER => 'property_manager',
         self::TENANT => 'tenant',
-        self::ACCOUNTING => 'accounting',
+        self::ACCOUNTANT => 'accountant',
     ];
 
 
