@@ -3,7 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Property\PropertyController;
 
-Route::middleware(['auth.tenant'/* , 'XSS' */])
+Route::middleware(['auth.property'/* , 'XSS' */])
   ->name('property.')
   ->prefix('property')
   ->namespace('App\Http\Controllers\Property')->group(function () {

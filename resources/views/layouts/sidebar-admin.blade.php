@@ -137,8 +137,8 @@
                             </span>
                         </a>
                     </li>
-                    
-                     <li class="nav-item">
+
+                    <li class="nav-item">
                         <a href="" class="nav-link {{ isActiveMenu(['admin.index']) }}">
                             <i class="ph-receipt"></i>
                             <span>
@@ -270,15 +270,14 @@
                             </span>
                         </a>
                     </li>
-                    <li class="nav-item nav-item-submenu">
-                        <a class="nav-link">
+
+                    <li class="nav-item">
+                        <a href="{{ route('admin.index') }}" class="nav-link {{ isActiveMenu(['admin.index']) }}">
                             <i class="ph-buildings"></i>
-                            <span>Properties</span>
+                            <span>
+                                Properties
+                            </span>
                         </a>
-                        <ul class="nav-group-sub collapse">
-                            <li class="nav-item"><a href="" class="nav-link">Property Types</a></li>
-                            <li class="nav-item"><a href="" class="nav-link">Properties</a></li>
-                        </ul>
                     </li>
 
                     <li class="nav-item nav-item-submenu">
@@ -292,28 +291,21 @@
                         </ul>
                     </li>
 
-
-                    <li class="nav-item">
-                        <a href="{{ route('admin.index') }}" class="nav-link {{ isActiveMenu(['admin.index']) }}">
+                    <li class="nav-item nav-item-submenu">
+                        <a class="nav-link">
                             <i class="ph-users"></i>
-                            <span>
-                                Tenants
-                            </span>
+                            <span>Occupant</span>
                         </a>
+                        <ul class="nav-group-sub collapse">
+                            <li class="nav-item"><a href="" class="nav-link">History</a></li>
+                            <li class="nav-item"><a href="" class="nav-link">Tenants</a></li>
+                            <li class="nav-item"><a href="" class="nav-link">Owners</a></li>
+                        </ul>
                     </li>
 
                     <li class="nav-item">
                         <a href="{{ route('admin.index') }}" class="nav-link {{ isActiveMenu(['admin.index']) }}">
-                            <i class="ph-users"></i>
-                            <span>
-                                Announcements
-                            </span>
-                        </a>
-                    </li>
-
-                    <li class="nav-item">
-                        <a href="{{ route('admin.index') }}" class="nav-link {{ isActiveMenu(['admin.index']) }}">
-                            <i class="ph-users"></i>
+                            <i class="ph-file"></i>
                             <span>
                                 Documents
                             </span>
