@@ -27,20 +27,30 @@ Route::get('/', function () {
         }
 
         if (authUser()->isRegularAdmin()) {
-            // return redirect()->route('admin.index');
+
             return to_route('admin.index');
         }
 
 
         if (authUser()->isTenant()) {
-            // return redirect()->route('admin.index');
+
             return to_route('tenant.index');
         }
 
 
         if (authUser()->isPropertyManager()) {
-            // return redirect()->route('admin.index');
+
             return to_route('property.index');
+        }
+
+        if (authUser()->isOwner()) {
+
+            return to_route('owner.index');
+        }
+
+        if (authUser()->isOwner()) {
+
+            return to_route('owner.index');
         }
     }
 })->middleware(['auth']);
@@ -48,4 +58,5 @@ Route::get('/', function () {
 require __DIR__ . '/auth.php';
 require __DIR__ . '/admin.php';
 require __DIR__ . '/tenant.php';
+require __DIR__ . '/owner.php';
 require __DIR__ . '/property.php';

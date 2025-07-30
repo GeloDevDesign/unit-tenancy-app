@@ -133,7 +133,7 @@
                         <a href="" class="nav-link {{ isActiveMenu(['admin.index']) }}">
                             <i class="ph-buildings"></i>
                             <span>
-                                My Unit Info
+                                Rent Unit Info
                             </span>
                         </a>
                     </li>
