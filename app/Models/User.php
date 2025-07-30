@@ -25,13 +25,17 @@ class User extends Authenticatable
     const OWNER = 'owner';
     const TENANT = 'tenant';
     const ACCOUNTANT = 'accountant';
+    const TENANT_MANAGER = 'tenant';
+
 
     public static $types = [
         self::TYPE_ADMIN => 'Super Admin',
         self::TYPE_REGULAR_ADMIN => 'Regular Admin',
-        self::PROPERTY_MANAGER => 'property_manager',
-        self::TENANT => 'tenant',
-        self::ACCOUNTANT => 'accountant',
+        self::PROPERTY_MANAGER => 'Property Manager',
+        self::TENANT => 'Tenant',
+        self::TENANT_MANAGER => 'Tenant Manager',
+        self::ACCOUNTANT => 'Accountant',
+        self::OWNER => 'Owner'
     ];
 
 
@@ -174,7 +178,7 @@ class User extends Authenticatable
     {
         return $this->type == self::TENANT;
     }
-     public function isOwner()
+    public function isOwner()
     {
         return $this->type == self::OWNER;
     }
@@ -182,6 +186,12 @@ class User extends Authenticatable
     public function isAccountant()
     {
         return $this->type == self::ACCOUNTANT;
+    }
+
+
+    public function isTenantManger()
+    {
+        return $this->type == self::TENANT_MANAGER;
     }
 
     public function isPropertyManager()

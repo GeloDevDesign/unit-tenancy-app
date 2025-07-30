@@ -48,9 +48,9 @@ Route::get('/', function () {
             return to_route('owner.index');
         }
 
-        if (authUser()->isOwner()) {
+        if (authUser()->isAccountant()) {
 
-            return to_route('owner.index');
+            return to_route('accountant.index');
         }
     }
 })->middleware(['auth']);
@@ -59,4 +59,5 @@ require __DIR__ . '/auth.php';
 require __DIR__ . '/admin.php';
 require __DIR__ . '/tenant.php';
 require __DIR__ . '/owner.php';
+require __DIR__ . '/accountant.php';
 require __DIR__ . '/property.php';

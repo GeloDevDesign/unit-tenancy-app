@@ -140,6 +140,22 @@
 
                     <li class="nav-item">
                         <a href="" class="nav-link {{ isActiveMenu(['admin.index']) }}">
+                            <i class="ph-wrench"></i>
+                            <span>
+                                Service Request
+                            </span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="" class="nav-link {{ isActiveMenu(['admin.index']) }}">
+                            <i class="ph-file"></i>
+                            <span>
+                                Documents
+                            </span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="" class="nav-link {{ isActiveMenu(['admin.index']) }}">
                             <i class="ph-receipt"></i>
                             <span>
                                 My Payment/Invoices
@@ -150,7 +166,7 @@
 
                 @if (authUser()->isOwner())
                     <li class="nav-item">
-                        <a href="{{ route('admin.index') }}" class="nav-link {{ isActiveMenu(['admin.index']) }}">
+                        <a href="" class="nav-link {{ isActiveMenu(['admin.index']) }}">
                             <i class="ph-house"></i>
                             <span>
                                 Dashboard
@@ -159,46 +175,82 @@
                     </li>
 
                     <li class="nav-item">
-                        <a href="{{ route('admin.index') }}" class="nav-link {{ isActiveMenu(['admin.index']) }}">
-                            <i class="ph-house"></i>
+                        <a href="" class="nav-link {{ isActiveMenu(['admin.index']) }}">
+                            <i class="ph-buildings"></i>
                             <span>
-                                My Units
+                                Unit Info
                             </span>
                         </a>
                     </li>
 
                     <li class="nav-item">
-                        <a href="{{ route('admin.index') }}" class="nav-link {{ isActiveMenu(['admin.index']) }}">
-                            <i class="ph-house"></i>
+                        <a href="" class="nav-link {{ isActiveMenu(['admin.index']) }}">
+                            <i class="ph-wrench"></i>
                             <span>
-                                My Tenants
+                                Service Request
                             </span>
                         </a>
                     </li>
 
                     <li class="nav-item">
-                        <a href="{{ route('admin.index') }}" class="nav-link {{ isActiveMenu(['admin.index']) }}">
-                            <i class="ph-house"></i>
+                        <a href="" class="nav-link {{ isActiveMenu(['admin.index']) }}">
+                            <i class="ph-file"></i>
                             <span>
-                                Income Reports
+                                Documents
                             </span>
                         </a>
                     </li>
 
                     <li class="nav-item">
-                        <a href="{{ route('admin.index') }}" class="nav-link {{ isActiveMenu(['admin.index']) }}">
+                        <a href="" class="nav-link {{ isActiveMenu(['admin.index']) }}">
+                            <i class="ph-receipt"></i>
+                            <span>
+                                My Payment/Invoices
+                            </span>
+                        </a>
+                    </li>
+                @endif
+
+                @if (authUser()->isTenantManager())
+                    <li class="nav-item">
+                        <a href="" class="nav-link {{ isActiveMenu(['admin.index']) }}">
                             <i class="ph-house"></i>
                             <span>
-                                Property Documents
+                                Dashboard
                             </span>
                         </a>
                     </li>
 
                     <li class="nav-item">
-                        <a href="{{ route('admin.index') }}" class="nav-link {{ isActiveMenu(['admin.index']) }}">
-                            <i class="ph-house"></i>
+                        <a href="" class="nav-link {{ isActiveMenu(['admin.index']) }}">
+                            <i class="ph-buildings"></i>
                             <span>
-                                Property Status
+                                Rent Unit Info
+                            </span>
+                        </a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a href="" class="nav-link {{ isActiveMenu(['admin.index']) }}">
+                            <i class="ph-wrench"></i>
+                            <span>
+                                Service Request
+                            </span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="" class="nav-link {{ isActiveMenu(['admin.index']) }}">
+                            <i class="ph-file"></i>
+                            <span>
+                                Documents
+                            </span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="" class="nav-link {{ isActiveMenu(['admin.index']) }}">
+                            <i class="ph-receipt"></i>
+                            <span>
+                                My Payment/Invoices
                             </span>
                         </a>
                     </li>
@@ -238,7 +290,7 @@
 
                     <li class="nav-item nav-item-submenu">
                         <a class="nav-link">
-                            <i class="ph-users"></i>
+                            <i class="ph-megaphone"></i>
                             <span>Reminders</span>
                         </a>
                         <ul class="nav-group-sub collapse">
