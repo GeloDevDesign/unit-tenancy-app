@@ -34,14 +34,7 @@ Route::get('/', function () {
 
         if (authUser()->isTenant()) {
             // return redirect()->route('admin.index');
-
-            $pageTitle = 'Admin - Dashboard';
-
-            $generalSettings = GeneralSetting::find(1);
-            $contents = optional($generalSettings)->dashboard_text ?? '';
-
-
-            return view('tenant.index',compact('pageTitle', 'contents'));
+            return to_route('tenant.index');
         }
     }
 })->middleware(['auth']);
