@@ -36,9 +36,16 @@ Route::get('/', function () {
             // return redirect()->route('admin.index');
             return to_route('tenant.index');
         }
+
+
+        if (authUser()->isPropertyManager()) {
+            // return redirect()->route('admin.index');
+            return to_route('property.index');
+        }
     }
 })->middleware(['auth']);
 
 require __DIR__ . '/auth.php';
 require __DIR__ . '/admin.php';
 require __DIR__ . '/tenant.php';
+require __DIR__ . '/property.php';

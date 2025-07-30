@@ -9,4 +9,4 @@ Route::middleware(['auth.tenant'/* , 'XSS' */])
   ->namespace('App\Http\Controllers\Tenant')->group(function () {
 
     Route::get('/', [TenantController::class, 'index'])->name('index');
-  });
+});

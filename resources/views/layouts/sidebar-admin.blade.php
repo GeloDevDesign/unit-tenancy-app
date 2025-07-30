@@ -137,40 +137,12 @@
                             </span>
                         </a>
                     </li>
-
-                    <li class="nav-item">
-                        <a href="" class="nav-link {{ isActiveMenu(['admin.index']) }}">
-                            <i class="ph-money"></i>
-                            <span>
-                                My Payments
-                            </span>
-                        </a>
-                    </li>
-
+                    
                      <li class="nav-item">
                         <a href="" class="nav-link {{ isActiveMenu(['admin.index']) }}">
                             <i class="ph-receipt"></i>
                             <span>
-                                My Invoices
-                            </span>
-                        </a>
-                    </li>
-
-
-                    <li class="nav-item">
-                        <a href="" class="nav-link {{ isActiveMenu(['admin.index']) }}">
-                            <i class="ph-megaphone"></i>
-                            <span>
-                               Announcements
-                            </span>
-                        </a>
-                    </li>
-
-                     <li class="nav-item">
-                        <a href="" class="nav-link {{ isActiveMenu(['admin.index']) }}">
-                            <i class="ph-file-arrow-up"></i>
-                            <span>
-                               Submit Request / Feedback
+                                My Payment/Invoices
                             </span>
                         </a>
                     </li>
