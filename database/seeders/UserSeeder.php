@@ -26,33 +26,9 @@ class UserSeeder extends Seeder
                 'created_by' => '1'
             ],
             [
-                'first_name' => 'King Bon',
-                'last_name' => 'Racimo',
-                'email' => 'pay.sytian@gmail.com',
-                'password' => Hash::make('admin123'),
-                'type' => User::TYPE_ADMIN,
-                'created_by' => '1'
-            ],
-            [
-                'first_name' => 'Kits',
-                'last_name' => 'Perez',
-                'email' => 'pay.sytian@gmail.com',
-                'password' => Hash::make('admin123'),
-                'type' => User::TYPE_ADMIN,
-                'created_by' => '1'
-            ],
-            [
                 'first_name' => 'Barlaw Kenneth',
                 'last_name' => 'Sytian',
                 'email' => 'kenneth@sytian-productions.com',
-                'password' => Hash::make('admin123'),
-                'type' => User::TYPE_ADMIN,
-                'created_by' => '1'
-            ],
-            [
-                'first_name' => 'Rona Faye',
-                'last_name' => 'Agaton',
-                'email' => 'pay.sytian@gmail.com',
                 'password' => Hash::make('admin123'),
                 'type' => User::TYPE_ADMIN,
                 'created_by' => '1'
@@ -64,7 +40,50 @@ class UserSeeder extends Seeder
                 'password' => Hash::make('admin123'),
                 'type' => User::TYPE_REGULAR_ADMIN,
                 'created_by' => '1'
-            ]
+            ],
+            [
+                'first_name' => 'Tenant',
+                'last_name' => 'tenant',
+                'email' => 'tenant@gmail.com',
+                'password' => Hash::make('admin123'),
+                'type' => User::TENANT,
+                'created_by' => '1'
+            ],
+            [
+                'first_name' => 'Tenant',
+                'last_name' => 'manager',
+                'email' => 'tenantmanager@gmail.com',
+                'password' => Hash::make('admin123'),
+                'type' => User::TENANT_MANAGER,
+                'created_by' => '1'
+            ],
+
+            [
+                'first_name' => 'Owner',
+                'last_name' => 'ownder',
+                'email' => 'owner@gmail.com',
+                'password' => Hash::make('admin123'),
+                'type' => User::OWNER,
+                'created_by' => '1'
+            ],
+
+            [
+                'first_name' => 'Property',
+                'last_name' => 'Manager',
+                'email' => 'propertymanager@gmail.com',
+                'password' => Hash::make('admin123'),
+                'type' => User::PROPERTY_MANAGER,
+                'created_by' => '1'
+            ],
+            [
+                'first_name' => 'accountant',
+                'last_name' => 'accountant',
+                'email' => 'accountant@gmail.com',
+                'password' => Hash::make('admin123'),
+                'type' => User::ACCOUNTANT,
+                'created_by' => '1'
+            ],
+
         ]);
     }
 }

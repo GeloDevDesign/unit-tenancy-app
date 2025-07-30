@@ -5,7 +5,7 @@ namespace App\Http\Middleware;
 use Closure;
 use Illuminate\Http\Request;
 
-class AuthAdmin
+class AuthTenant
 {
     /**
      * Handle an incoming request.
@@ -17,12 +17,12 @@ class AuthAdmin
     public function handle(Request $request, Closure $next)
     {
         $user = $request->user();
-        if ($user && !$user->isAdmin() && !$user->isRegularAdmin()) {
+        if ($user && !$user->isTenant()) {
             abort(403);
         } else {
             if (!$user) {
                 // return redirect()->route('login');
-                 return redirect()->intended(route('dashboard', absolute: false));
+                return to_route('login');
             }
         }
 

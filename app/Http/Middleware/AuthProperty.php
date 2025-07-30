@@ -4,25 +4,24 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
+use Symfony\Component\HttpFoundation\Response;
 
-class AuthAdmin
+class AuthProperty
 {
     /**
      * Handle an incoming request.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \Closure(\Illuminate\Http\Request): (\Illuminate\Http\Response|\Illuminate\Http\RedirectResponse)  $next
-     * @return \Illuminate\Http\Response|\Illuminate\Http\RedirectResponse
+     * @param  \Closure(\Illuminate\s9deHttp\Request): (\Symfony\Component\HttpFoundation\Response)  $next
      */
     public function handle(Request $request, Closure $next)
     {
         $user = $request->user();
-        if ($user && !$user->isAdmin() && !$user->isRegularAdmin()) {
+        if ($user && !$user->isPropertyManager()) {
             abort(403);
         } else {
             if (!$user) {
                 // return redirect()->route('login');
-                 return redirect()->intended(route('dashboard', absolute: false));
+                return to_route('login');
             }
         }
 

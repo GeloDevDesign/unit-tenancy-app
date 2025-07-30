@@ -21,9 +21,21 @@ class User extends Authenticatable
     const TYPE_ADMIN = 'admin';
     const TYPE_REGULAR_ADMIN = 'regular_admin';
 
+    const PROPERTY_MANAGER = 'property_manager';
+    const OWNER = 'owner';
+    const TENANT = 'tenant';
+    const ACCOUNTANT = 'accountant';
+    const TENANT_MANAGER = 'tenant manager';
+
+
     public static $types = [
         self::TYPE_ADMIN => 'Super Admin',
-        self::TYPE_REGULAR_ADMIN => 'Regular Admin'
+        self::TYPE_REGULAR_ADMIN => 'Regular Admin',
+        self::PROPERTY_MANAGER => 'Property Manager',
+        self::TENANT => 'Tenant',
+        self::TENANT_MANAGER => 'Tenant Manager',
+        self::ACCOUNTANT => 'Accountant',
+        self::OWNER => 'Owner'
     ];
 
 
@@ -144,7 +156,7 @@ class User extends Authenticatable
 
     public function getProfilePicFilenameAttribute()
     {
-    return $this->profile_picture ? str_replace('profile_pictures/', '', $this->profile_picture) : 'default-user-icon.jpg';
+        return $this->profile_picture ? str_replace('profile_pictures/', '', $this->profile_picture) : 'default-user-icon.jpg';
     }
 
     public function getDefaultProfilePicPathAttribute()
@@ -160,6 +172,31 @@ class User extends Authenticatable
     public function isRegularAdmin()
     {
         return $this->type == self::TYPE_REGULAR_ADMIN;
+    }
+
+    public function isTenant()
+    {
+        return $this->type == self::TENANT;
+    }
+    public function isOwner()
+    {
+        return $this->type == self::OWNER;
+    }
+
+    public function isAccountant()
+    {
+        return $this->type == self::ACCOUNTANT;
+    }
+
+
+    public function isTenantManager()
+    {
+        return $this->type == self::TENANT_MANAGER;
+    }
+
+    public function isPropertyManager()
+    {
+        return $this->type == self::PROPERTY_MANAGER;
     }
 
     /**
