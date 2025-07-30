@@ -121,7 +121,7 @@
 
                 @if (authUser()->isTenant())
                     <li class="nav-item">
-                        <a href="{{ route('admin.index') }}" class="nav-link {{ isActiveMenu(['admin.index']) }}">
+                        <a href="" class="nav-link {{ isActiveMenu(['admin.index']) }}">
                             <i class="ph-house"></i>
                             <span>
                                 Dashboard
@@ -130,7 +130,7 @@
                     </li>
 
                     <li class="nav-item">
-                        <a href="{{ route('admin.index') }}" class="nav-link {{ isActiveMenu(['admin.index']) }}">
+                        <a>
                             <i class="ph-house"></i>
                             <span>
                                 My Unit Info
@@ -139,7 +139,7 @@
                     </li>
 
                     <li class="nav-item">
-                        <a href="{{ route('admin.index') }}" class="nav-link {{ isActiveMenu(['admin.index']) }}">
+                        <a>
                             <i class="ph-house"></i>
                             <span>
                                 My Payments
@@ -148,7 +148,7 @@
                     </li>
 
                     <li class="nav-item">
-                        <a href="{{ route('admin.index') }}" class="nav-link {{ isActiveMenu(['admin.index']) }}">
+                        <a>
                             <i class="ph-house"></i>
                             <span>
                                 My Invoices
@@ -157,7 +157,7 @@
                     </li>
 
                     <li class="nav-item">
-                        <a href="{{ route('admin.index') }}" class="nav-link {{ isActiveMenu(['admin.index']) }}">
+                        <a>
                             <i class="ph-house"></i>
                             <span>
                                 Announcements
@@ -166,7 +166,7 @@
                     </li>
 
                     <li class="nav-item">
-                        <a href="{{ route('admin.index') }}" class="nav-link {{ isActiveMenu(['admin.index']) }}">
+                        <a>
                             <i class="ph-house"></i>
                             <span>
                                 Submit Request / Feedback

@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
+use App\Models\GeneralSetting;
 
 /*
 |--------------------------------------------------------------------------
@@ -14,23 +15,37 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('welcome', function() {
+Route::get('welcome', function () {
     return view('welcome');
 });
 
 Route::get('/', function () {
     if (authUser()) {
-        if(authUser()->isAdmin()) {
+        if (authUser()->isAdmin()) {
             // return redirect()->route('admin.index');
             return to_route('admin.index');
         }
 
-        if(authUser()->isRegularAdmin()) {
+        if (authUser()->isRegularAdmin()) {
             // return redirect()->route('admin.index');
             return to_route('admin.index');
+        }
+
+
+        if (authUser()->isTenant()) {
+            // return redirect()->route('admin.index');
+
+            $pageTitle = 'Admin - Dashboard';
+
+            $generalSettings = GeneralSetting::find(1);
+            $contents = optional($generalSettings)->dashboard_text ?? '';
+
+
+            return view('tenant.index',compact('pageTitle', 'contents'));
         }
     }
 })->middleware(['auth']);
 
-require __DIR__.'/auth.php';
-require __DIR__.'/admin.php';
+require __DIR__ . '/auth.php';
+require __DIR__ . '/admin.php';
+require __DIR__ . '/tenant.php';

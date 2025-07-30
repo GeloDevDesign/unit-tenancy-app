@@ -3,6 +3,9 @@
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\ProfileController;
 use App\Http\Controllers\Admin\ActivityLogController;
+use App\Http\Controllers\Admin\GeneralSettingsController;
+use Illuminate\Support\Facades\Route;
+
 
 Route::middleware(['auth.admin'/* , 'XSS' */])
     ->name('admin.')

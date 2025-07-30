@@ -22,7 +22,7 @@ class AuthAdmin
         } else {
             if (!$user) {
                 // return redirect()->route('login');
-                return to_route('login');
+                 return redirect()->intended(route('dashboard', absolute: false));
             }
         }
 
