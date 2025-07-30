@@ -243,7 +243,7 @@
 
                     <li class="nav-item">
                         <a href="" class="nav-link {{ isActiveMenu(['admin.index']) }}">
-                            <i class="ph-user"></i>
+                            <i class="ph-money"></i>
                             <span>
                                 Pending Payment
                             </span>
@@ -333,8 +333,8 @@
                             <span>Units</span>
                         </a>
                         <ul class="nav-group-sub collapse">
-                            <li class="nav-item"><a href="" class="nav-link">My Units</a></li>
-                            <li class="nav-item"><a href="" class="nav-link">Unit Assignments</a></li>
+                            <li class="nav-item"><a href="" class="nav-link">Rental Records</a></li>
+                            <li class="nav-item"><a href="" class="nav-link">Damage Reports</a></li>
                         </ul>
                     </li>
 
@@ -344,9 +344,9 @@
                             <span>Occupant</span>
                         </a>
                         <ul class="nav-group-sub collapse">
-                            <li class="nav-item"><a href="" class="nav-link">History</a></li>
                             <li class="nav-item"><a href="" class="nav-link">Tenants</a></li>
                             <li class="nav-item"><a href="" class="nav-link">Owners</a></li>
+
                         </ul>
                     </li>
 

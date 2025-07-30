@@ -52,7 +52,15 @@ class UserSeeder extends Seeder
             [
                 'first_name' => 'Tenant',
                 'last_name' => 'manager',
-                'email' => 'tenantmanager@gmail.com',
+                'email' => 'tenantmanager1@gmail.com',
+                'password' => Hash::make('admin123'),
+                'type' => User::TENANT_MANAGER,
+                'created_by' => '1'
+            ],
+            [
+                'first_name' => 'Tenant',
+                'last_name' => 'manager',
+                'email' => 'tenantmanager2@gmail.com',
                 'password' => Hash::make('admin123'),
                 'type' => User::TENANT_MANAGER,
                 'created_by' => '1'
