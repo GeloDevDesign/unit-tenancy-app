@@ -58,6 +58,7 @@ class Kernel extends HttpKernel
         'auth.session' => \Illuminate\Session\Middleware\AuthenticateSession::class,
         'auth.admin' => \App\Http\Middleware\AuthAdmin::class,
         'auth.tenant' => \App\Http\Middleware\AuthTenant::class,
+        'auth.tenantManager' => \App\Http\Middleware\AuthTenantManager::class,
         'auth.owner' => \App\Http\Middleware\AuthOwner::class,
         'auth.property' => \App\Http\Middleware\AuthProperty::class,
         'auth.accountant' => \App\Http\Middleware\AuthAccountant::class,

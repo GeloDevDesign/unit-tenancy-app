@@ -223,34 +223,29 @@
 
                     <li class="nav-item">
                         <a href="" class="nav-link {{ isActiveMenu(['admin.index']) }}">
-                            <i class="ph-buildings"></i>
+                            <i class="ph-user"></i>
                             <span>
-                                Rent Unit Info
+                                Tenant List
+                            </span>
+                        </a>
+                    </li>
+
+
+
+                    <li class="nav-item">
+                        <a href="" class="nav-link {{ isActiveMenu(['admin.index']) }}">
+                            <i class="ph-wrench"></i>
+                            <span>
+                                Request/Complaints
                             </span>
                         </a>
                     </li>
 
                     <li class="nav-item">
                         <a href="" class="nav-link {{ isActiveMenu(['admin.index']) }}">
-                            <i class="ph-wrench"></i>
+                            <i class="ph-user"></i>
                             <span>
-                                Service Request
-                            </span>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="" class="nav-link {{ isActiveMenu(['admin.index']) }}">
-                            <i class="ph-file"></i>
-                            <span>
-                                Documents
-                            </span>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="" class="nav-link {{ isActiveMenu(['admin.index']) }}">
-                            <i class="ph-receipt"></i>
-                            <span>
-                                My Payment/Invoices
+                                Pending Payment
                             </span>
                         </a>
                     </li>

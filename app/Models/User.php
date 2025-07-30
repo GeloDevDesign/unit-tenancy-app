@@ -25,7 +25,7 @@ class User extends Authenticatable
     const OWNER = 'owner';
     const TENANT = 'tenant';
     const ACCOUNTANT = 'accountant';
-    const TENANT_MANAGER = 'tenant';
+    const TENANT_MANAGER = 'tenant manager';
 
 
     public static $types = [
@@ -189,7 +189,7 @@ class User extends Authenticatable
     }
 
 
-    public function isTenantManger()
+    public function isTenantManager()
     {
         return $this->type == self::TENANT_MANAGER;
     }
