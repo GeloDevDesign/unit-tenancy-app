@@ -6,6 +6,7 @@ use App\Models\User;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
 use Spatie\Permission\Models\Role;
+use Illuminate\Support\Facades\DB;
 
 
 class UserSeeder extends Seeder
@@ -17,7 +18,11 @@ class UserSeeder extends Seeder
      */
     public function run()
     {
-        User::truncate();
+        DB::statement('SET FOREIGN_KEY_CHECKS=0;');
+        DB::table('properties')->truncate();
+        DB::table('users')->truncate();
+        DB::statement('SET FOREIGN_KEY_CHECKS=1;');
+
 
         // CREATE ROLE FOR USERS
         $roles = [

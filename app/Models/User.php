@@ -14,6 +14,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Spatie\Permission\Traits\HasRoles;
+use App\Models\Property;
 
 
 class User extends Authenticatable
@@ -201,6 +202,12 @@ class User extends Authenticatable
     public function isPropertyManager()
     {
         return $this->hasRole(self::PROPERTY_MANAGER);
+    }
+
+
+    public function properties()
+    {
+        return $this->hasMany(Property::class,'property_manager_id');
     }
 
     /**
