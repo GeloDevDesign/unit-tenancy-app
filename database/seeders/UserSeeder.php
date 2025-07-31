@@ -18,10 +18,14 @@ class UserSeeder extends Seeder
      */
     public function run()
     {
-        DB::statement('SET FOREIGN_KEY_CHECKS=0;');
-        DB::table('properties')->truncate();
-        DB::table('users')->truncate();
-        DB::statement('SET FOREIGN_KEY_CHECKS=1;');
+        // Disable foreign key checks to allow truncating tables that are referenced by other tables.
+        // This is necessary during seeding to avoid foreign key constraint violations,
+        // especially when truncating parent tables like `users` that are referenced by others tables.
+        // WARNING: Do not use this in production without understanding the impact on data integrity.
+
+        // DB::statement('SET FOREIGN_KEY_CHECKS=0;');
+        // DB::table('users')->truncate();
+        // DB::statement('SET FOREIGN_KEY_CHECKS=1;');
 
 
         // CREATE ROLE FOR USERS
