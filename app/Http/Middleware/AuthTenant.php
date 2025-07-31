@@ -17,7 +17,7 @@ class AuthTenant
     public function handle(Request $request, Closure $next)
     {
         $user = $request->user();
-        if ($user && !$user->isTenant()) {
+        if ($user && !$user->hasRole('tenant')) {
             abort(403);
         } else {
             if (!$user) {

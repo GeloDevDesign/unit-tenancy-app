@@ -17,7 +17,7 @@ class AuthOwner
     public function handle(Request $request, Closure $next)
     {
         $user = $request->user();
-        if ($user && !$user->isOwner()) {
+        if ($user && !$user->hasRole('owner')) {
             abort(403);
         } else {
             if (!$user) {

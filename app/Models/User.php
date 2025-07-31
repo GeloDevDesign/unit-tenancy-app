@@ -13,10 +13,12 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Spatie\Permission\Traits\HasRoles;
+
 
 class User extends Authenticatable
 {
-    use HasApiTokens, HasFactory, Notifiable, SoftDeletes, LogsActivity;
+    use HasApiTokens, HasFactory, Notifiable, SoftDeletes, LogsActivity,HasRoles;
 
     const TYPE_ADMIN = 'admin';
     const TYPE_REGULAR_ADMIN = 'regular_admin';
@@ -25,7 +27,7 @@ class User extends Authenticatable
     const OWNER = 'owner';
     const TENANT = 'tenant';
     const ACCOUNTANT = 'accountant';
-    const TENANT_MANAGER = 'tenant manager';
+    const TENANT_MANAGER = 'tenant_manager';
 
 
     public static $types = [
@@ -164,39 +166,41 @@ class User extends Authenticatable
         return asset('storage/profile_pictures/default-user-icon.jpg');
     }
 
+
     public function isAdmin()
     {
-        return $this->type == self::TYPE_ADMIN;
+        return $this->hasRole(self::TYPE_ADMIN);
     }
 
     public function isRegularAdmin()
     {
-        return $this->type == self::TYPE_REGULAR_ADMIN;
+        return $this->hasRole(self::TYPE_REGULAR_ADMIN);
     }
 
     public function isTenant()
     {
-        return $this->type == self::TENANT;
+        return $this->hasRole(self::TENANT);
     }
+
     public function isOwner()
     {
-        return $this->type == self::OWNER;
+        return $this->hasRole(self::OWNER);
     }
 
     public function isAccountant()
     {
-        return $this->type == self::ACCOUNTANT;
+        return $this->hasRole(self::ACCOUNTANT);
     }
 
 
     public function isTenantManager()
     {
-        return $this->type == self::TENANT_MANAGER;
+        return $this->hasRole(self::TENANT_MANAGER);
     }
 
     public function isPropertyManager()
     {
-        return $this->type == self::PROPERTY_MANAGER;
+        return $this->hasRole(self::PROPERTY_MANAGER);
     }
 
     /**

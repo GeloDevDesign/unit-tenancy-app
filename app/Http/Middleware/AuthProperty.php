@@ -16,7 +16,7 @@ class AuthProperty
     public function handle(Request $request, Closure $next)
     {
         $user = $request->user();
-        if ($user && !$user->isPropertyManager()) {
+        if ($user && !$user->hasRole('property_manager')) {
             abort(403);
         } else {
             if (!$user) {

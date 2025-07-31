@@ -17,7 +17,7 @@ class AuthAdmin
     public function handle(Request $request, Closure $next)
     {
         $user = $request->user();
-        if ($user && !$user->isAdmin() && !$user->isRegularAdmin()) {
+        if ($user && !$user->hasRole('admin') && !$user->hasRole('regular_admin')) {
             abort(403);
         } else {
             if (!$user) {
