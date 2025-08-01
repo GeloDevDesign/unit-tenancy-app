@@ -13,10 +13,18 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Spatie\Permission\Traits\HasRoles;
+use App\Models\Property;
+use App\Models\Unit;
+use App\Models\Contact;
+use App\Models\Payment;
+use App\Models\Document;
+use App\Models\Inspection;
+use App\Models\ServiceRequest;
 
 class User extends Authenticatable
 {
-    use HasApiTokens, HasFactory, Notifiable, SoftDeletes, LogsActivity;
+    use HasApiTokens, HasFactory, Notifiable, SoftDeletes, LogsActivity, HasRoles;
 
     const TYPE_ADMIN = 'admin';
     const TYPE_REGULAR_ADMIN = 'regular_admin';
@@ -25,7 +33,7 @@ class User extends Authenticatable
     const OWNER = 'owner';
     const TENANT = 'tenant';
     const ACCOUNTANT = 'accountant';
-    const TENANT_MANAGER = 'tenant manager';
+    const TENANT_MANAGER = 'tenant_manager';
 
 
     public static $types = [
@@ -164,40 +172,94 @@ class User extends Authenticatable
         return asset('storage/profile_pictures/default-user-icon.jpg');
     }
 
+
     public function isAdmin()
     {
-        return $this->type == self::TYPE_ADMIN;
+        return $this->hasRole(self::TYPE_ADMIN);
     }
 
     public function isRegularAdmin()
     {
-        return $this->type == self::TYPE_REGULAR_ADMIN;
+        return $this->hasRole(self::TYPE_REGULAR_ADMIN);
     }
 
     public function isTenant()
     {
-        return $this->type == self::TENANT;
+        return $this->hasRole(self::TENANT);
     }
+
     public function isOwner()
     {
-        return $this->type == self::OWNER;
+        return $this->hasRole(self::OWNER);
     }
 
     public function isAccountant()
     {
-        return $this->type == self::ACCOUNTANT;
+        return $this->hasRole(self::ACCOUNTANT);
     }
 
 
     public function isTenantManager()
     {
-        return $this->type == self::TENANT_MANAGER;
+        return $this->hasRole(self::TENANT_MANAGER);
     }
 
     public function isPropertyManager()
     {
-        return $this->type == self::PROPERTY_MANAGER;
+        return $this->hasRole(self::PROPERTY_MANAGER);
     }
+
+
+    public function properties()
+    {
+        // return $this->hasMany(Property::class,'property_manager_id');
+        return $this->hasMany(Property::class, 'property_manager_id');
+    }
+
+    // Units where this user is the current occupant (tenant or owner)
+    public function occupiedUnits()
+    {
+        return $this->hasMany(Unit::class, 'occupant_id');
+    }
+
+    // Units where this user is assigned as the tenant manager
+    public function managedUnits()
+    {
+        return $this->hasMany(Unit::class, 'tenant_manager_id');
+    }
+
+
+    public function contacts()
+    {
+        return $this->hasMany(Contact::class);
+    }
+
+    public function inspections()
+    {
+        return $this->hasMany(Inspection::class);
+    }
+
+
+    public function payments()
+    {
+        return $this->hasMany(Payment::class);
+    }
+
+    public function reminders()
+    {
+        return $this->hasMany(Reminder::class);
+    }
+
+    public function documents()
+    {
+        return $this->hasMany(Document::class);
+    }
+
+    public function serviceRequest()
+    {
+        return $this->hasMany(ServiceRequest::class);
+    }
+
 
     /**
      * The "booted" method of the model.

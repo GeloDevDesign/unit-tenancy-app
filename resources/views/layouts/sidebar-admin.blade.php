@@ -243,7 +243,7 @@
 
                     <li class="nav-item">
                         <a href="" class="nav-link {{ isActiveMenu(['admin.index']) }}">
-                            <i class="ph-user"></i>
+                            <i class="ph-money"></i>
                             <span>
                                 Pending Payment
                             </span>
@@ -319,7 +319,8 @@
                     </li>
 
                     <li class="nav-item">
-                        <a href="{{ route('admin.index') }}" class="nav-link {{ isActiveMenu(['admin.index']) }}">
+                        <a href="{{ route('property.index') }}"
+                            class="nav-link {{ isActiveMenu(['property.index']) }}">
                             <i class="ph-buildings"></i>
                             <span>
                                 Properties
@@ -329,12 +330,13 @@
 
                     <li class="nav-item nav-item-submenu">
                         <a class="nav-link">
-                            <i class="ph-house-simple"></i>
+                            <i class="ph-door"></i>
                             <span>Units</span>
                         </a>
                         <ul class="nav-group-sub collapse">
-                            <li class="nav-item"><a href="" class="nav-link">My Units</a></li>
-                            <li class="nav-item"><a href="" class="nav-link">Unit Assignments</a></li>
+                            <li class="nav-item"><a href="{{ route('unit.index') }}" class="nav-link">Unit List</a></li>
+                            <li class="nav-item"><a href="" class="nav-link">Rental Records</a></li>
+                            <li class="nav-item"><a href="" class="nav-link">Damage Reports</a></li>
                         </ul>
                     </li>
 
@@ -344,9 +346,9 @@
                             <span>Occupant</span>
                         </a>
                         <ul class="nav-group-sub collapse">
-                            <li class="nav-item"><a href="" class="nav-link">History</a></li>
                             <li class="nav-item"><a href="" class="nav-link">Tenants</a></li>
                             <li class="nav-item"><a href="" class="nav-link">Owners</a></li>
+
                         </ul>
                     </li>
 

@@ -8,72 +8,75 @@
     <div class="text-end mb-4">
         <a href="{{ route('property.create') }}">
             <x-button type="button" class="btn-primary pull-right me-2" :action="'add'">
-                Add New Property
+                Register New Unit
             </x-button>
         </a>
     </div>
 
-    <x-filters :action="route('property.index')" :users="$properties" :has-daterange="false" :has-user-type="false" :has-search="true" :search-placeholder="'Property Name'">
+    <x-filters :action="route('unit.index')" :has-daterange="false" :has-user-type="false" :has-search="true" :has-search="true" :search-placeholder="'Property Name'">
     </x-filters>
 
     <div class="row">
         <div class="col-md-12">
-            <x-admin-panel :has-per-page="true" :per-page-route="route('property.index')" :filters="$filters">
+            <x-admin-panel :has-per-page="true" :per-page-route="route('unit.index')" :filters="$filters">
                 <div class="row">
                     <div class="col-md-12">
                         <x-table-container>
                             <thead class="table-head">
                                 <tr>
                                     <th>#</th>
-                                    <th>Name</th>
+                                    <th>Unit Number</th>
                                     <th>Location</th>
-                                    <th>Building</th>
-                                    <th>Occupied Units</th>
-                                    <th>Number of Units</th>
+                                    <th>Floor</th>
+                                    <th>Capacity Count</th>
+                                    <th>Square Meter</th>
+                                    <th>Occupant Type</th>
+                                    <th>Tenant Manager</th>
+                                    <th>Status</th>
                                     <th>Action</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                @forelse ($properties as $property)
+                                @forelse ($units as $unit)
                                     <tr class="{{ $loop->iteration % 2 == 0 ? 'odd' : 'even' }} table-tr">
                                         <td class="table-td">{{ $loop->iteration }}</td>
 
                                         <td class="table-td">
-                                            <a href="{{ route('property.edit', $property->id) }}">
-                                                {{ $property->name ?? 'N/A' }}
+                                            <a href="{{ route('unit.edit', $unit->id) }}">
+                                                {{ $unit->name }}
                                             </a>
-
-
-                                        <td class="table-td">
-                                            {{ $property->location ?? 'N/A' }}
                                         </td>
 
 
 
-                                        </td>
+
                                         <td class="table-td">
+                                            {{ $unit->name }}
+                                        </td>
 
-                                            {{ $property->building ?? 'N/A' }}
-
+                                        <td class="table-td">
+                                            <a href="{{ route('unit.edit', $unit->id) }}">
+                                                {{ $unit->name }}
+                                            </a>
                                         </td>
                                         <td class="table-td">
                                             {{ 0 }}
                                         </td>
 
                                         <td class="table-td">
-                                            {{ $property->id }}
+                                            {{ $unit->id }}
                                         </td>
 
                                         <td>
-                                            <x-entity-actions :edit="route('property.edit', $property)" :entity-id="'property-' . $property->id" :delete="route('property.destroy', $property)"
-                                                :name="$property->name" :show="route('property.edit', $property)">
+                                            <x-entity-actions :edit="route('unit.edit', $unit)" :entity-id="'unit-' . $unit->id" :delete="route('unit.destroy', $unit)"
+                                                :name="$unit->name" :show="route('unit.edit', $unit)">
                                             </x-entity-actions>
                                         </td>
 
                                     </tr>
                                 @empty
                                     <tr>
-                                        <td colspan="6" class="text-center">No Property Available</td>
+                                        <td colspan="10" class="text-center">No Unit Available</td>
                                     </tr>
                                 @endforelse
                             </tbody>
