@@ -14,20 +14,21 @@ class UnitController extends Controller
      */
     public function index(Request $request)
     {
-        $query = Property::with('user');
+        $query = Unit::with('property');
 
         if ($search = $request->input('search')) {
-            $query->where('name', 'like', '%' . $search . '%')
-                ->orWhere('location', 'like', '%' . $search . '%');
+            $query->where('unit_number', 'like', '%' . $search . '%')
+                ->orWhere('bulding', 'like', '%' . $search . '%')
+                ->orWhere('bulding', 'like', '%' . $search . '%');
         }
 
-        $properties = $query->latest()->paginate(10);
+        $units = $query->latest()->paginate(10);
 
 
 
         return view('unit.index', [
             'title' => 'All Properties',
-            'properties' => $properties,
+            'units' => $units,
             'filters' => $request->only('search'),
         ]);
     }

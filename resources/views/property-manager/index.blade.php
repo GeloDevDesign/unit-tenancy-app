@@ -27,6 +27,7 @@
                                     <th>#</th>
                                     <th>Name</th>
                                     <th>Location</th>
+                                    <th>Building</th>
                                     <th>Occupied Units</th>
                                     <th>Number of Units</th>
                                     <th>Action</th>
@@ -39,12 +40,21 @@
 
                                         <td class="table-td">
                                             <a href="{{ route('property.edit', $property->id) }}">
-                                                {{ $property->name }}
+                                                {{ $property->name ?? 'N/A' }}
                                             </a>
-                                        </td>
+
 
                                         <td class="table-td">
                                             {{ $property->location ?? 'N/A' }}
+                                        </td>
+
+
+
+                                        </td>
+                                        <td class="table-td">
+
+                                            {{ $property->building ?? 'N/A' }}
+
                                         </td>
                                         <td class="table-td">
                                             {{ 0 }}

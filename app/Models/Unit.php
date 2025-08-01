@@ -20,8 +20,11 @@ class Unit extends Model
         'tenant_manager_id',
         'occupant_id',
         'unit_number',
+        'bulding',
+        'building_number',
         'floor',
         'capacity_count',
+        'sqm_size',
         'status',
     ];
 

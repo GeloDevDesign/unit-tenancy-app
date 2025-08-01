@@ -9,6 +9,8 @@
             <x-input-error :messages="$errors->get('name')" class="mt-2" />
         </div>
 
+        
+
         <!-- Property Location -->
         <div class="col-12 col-md-6">
             <x-input-label class="label-" for="location" :value="__('Location')" />

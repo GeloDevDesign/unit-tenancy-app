@@ -16,7 +16,8 @@ class Property extends Model
     protected $fillable = [
         'property_manager_id',
         'name',
-        'location'
+        'location',
+        'building'
     ];
 
 

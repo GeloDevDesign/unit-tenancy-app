@@ -53,7 +53,9 @@ class PropertyController extends Controller
 
         $validated = $request->validate([
             'name' => 'required|max:100|string',
-            'location' => 'required|max:255|string'
+            'location' => 'required|max:255|string',
+            'building' => ['required', 'string', 'regex:/^[A-Za-z]{2,5}$/']
+
         ]);
 
         $property = $request->user()->properties()->create($validated);
