@@ -7,68 +7,98 @@ use App\Models\Property;
 use Illuminate\Http\Request;
 use App\Models\GeneralSetting;
 
+
 class PropertyController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-   public function index()
+
+    public function index(Request $request)
     {
+        $query = Property::with('user');
 
-        $pageTitle = 'Properties - Dashboard';
+        if ($search = $request->input('search')) {
+            $query->where('name', 'like', '%' . $search . '%')
+                ->orWhere('location', 'like', '%' . $search . '%');
+        }
 
+        $properties = $query->latest()->paginate(10);
+
+
+
+        return view('property-manager.index', [
+            'title' => 'All Properties',
+            'properties' => $properties,
+            'filters' => $request->only('search'),
+        ]);
+    }
+
+
+
+
+    public function create()
+    {
+        $title = 'Property - Dashboard';
+
+        $property = [];
         $generalSettings = GeneralSetting::find(1);
         $contents = optional($generalSettings)->dashboard_text ?? '';
 
+        $filters  = [];
 
-        return view('property-manager.index', compact('pageTitle', 'contents'));
+        return view('property-manager.create', compact('title', 'contents',  'filters', 'property'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
-        //
+
+        $validated = $request->validate([
+            'name' => 'required|max:100|string',
+            'location' => 'required|max:255|string'
+        ]);
+
+        $property = $request->user()->properties()->create($validated);
+
+        return to_route('property.index')->withSuccess('Property has been created successfully');
     }
 
-    /**
-     * Display the specified resource.
-     */
+
     public function show(Property $property)
     {
-        //
+
+
+        $title = 'Edit Property Info';
+
+        return view('property-manager.index', compact('title', 'property'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
     public function edit(Property $property)
     {
-        //
+
+        $title = 'Edit Property Info';
+
+        return view('property-manager.edit', compact('title', 'property'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
+
     public function update(Request $request, Property $property)
     {
-        //
+
+        $validated = $request->validate([
+            'name' => 'required|max:100|string',
+            'location' => 'required|max:255|string'
+        ]);
+
+
+        $property->update($validated);
+
+        return to_route('property.index')->withSuccess('Property has been updated successfully');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
+
     public function destroy(Property $property)
     {
-        //
+        $property->delete();
+
+        return to_route('property.index')->withSuccess('Property has been deleted successfully');
     }
 }

@@ -17,7 +17,7 @@ class UserController extends Controller
     {
         // $users = User::where('type', '=', 'admin')->paginate(20);
         $pageTitle = 'Admin - View Users';
-        $query = User::query()->admins()->where('id', '!=', authUser()->id);
+        $query = User::query()->where('id', '!=', authUser()->id);
 
         if ($request->exists('s')) {
             $query = $query->when($request->get('s') ?? false,function($query, $search){

@@ -319,7 +319,8 @@
                     </li>
 
                     <li class="nav-item">
-                        <a href="{{ route('admin.index') }}" class="nav-link {{ isActiveMenu(['admin.index']) }}">
+                        <a href="{{ route('property.index') }}"
+                            class="nav-link {{ isActiveMenu(['property.index']) }}">
                             <i class="ph-buildings"></i>
                             <span>
                                 Properties
