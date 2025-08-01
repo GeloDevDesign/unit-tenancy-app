@@ -330,10 +330,11 @@
 
                     <li class="nav-item nav-item-submenu">
                         <a class="nav-link">
-                            <i class="ph-house-simple"></i>
+                            <i class="ph-door"></i>
                             <span>Units</span>
                         </a>
                         <ul class="nav-group-sub collapse">
+                            <li class="nav-item"><a href="{{ route('unit.index') }}" class="nav-link">Unit List</a></li>
                             <li class="nav-item"><a href="" class="nav-link">Rental Records</a></li>
                             <li class="nav-item"><a href="" class="nav-link">Damage Reports</a></li>
                         </ul>
