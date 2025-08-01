@@ -14,12 +14,25 @@ return new class extends Migration
         Schema::create('inspections', function (Blueprint $table) {
             $table->id();
             $table->foreignId('unit_id')->constrained()->onDelete('cascade');
-            $table->foreignId('occupant_id')->constrained('users')->onDelete('cascade');
-            $table->foreignId('reviewed_by')->constrained('users')->onDelete('cascade');
-            $table->enum('type', ['move_in', 'move_out', 'routine', 'complaint']);
-            $table->string('notes', 255);
-            $table->date('request_date');
+            $table->foreignId('inspected_by')->constrained('users')->onDelete('cascade');
+            $table->enum('inspection_type', ['move_in', 'move_out', 'routine', 'complaint']);
+
+
+            $table->string('report_title', 255);
+            $table->boolean('damage_found')->default(false);
+            $table->text('notes')->nullable();
+            $table->dateTime('report_date_time');
+            $table->enum('review_status', ['pending', 'reviewed', 'resolved'])->default('pending');
+
             $table->softDeletes();
+            $table->timestamps();
+        });
+
+        Schema::create('inspection_images', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('uploaded_by')->constrained('users')->cascadeOnDelete();
+            $table->foreignId('unit_id')->constrained()->cascadeOnDelete();
+            $table->string('image_path');
             $table->timestamps();
         });
     }
@@ -29,6 +42,7 @@ return new class extends Migration
      */
     public function down(): void
     {
+        Schema::dropIfExists('inspection_images');
         Schema::dropIfExists('inspections');
     }
 };

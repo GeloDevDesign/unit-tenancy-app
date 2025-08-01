@@ -12,10 +12,13 @@ class Inspection extends Model
 
     protected  $fillable = [
         'unit_id',
+        'inspected_by',
         'occupant_id',
-        'reviewed_by',
-        'type',
+        'inspection_type',
+        'report_title',
+        'damage_found',
         'notes',
-        'request_date'
+        'report_date_time',
+        'status'
     ];
 }

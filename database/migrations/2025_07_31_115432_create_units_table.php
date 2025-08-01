@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('property_id')->constrained('properties')->cascadeOnDelete();
             $table->foreignId('tenant_manager_id')->constrained('users')->cascadeOnDelete();
-            $table->foreignId('occupant_id')->constrained('users')->cascadeOnDelete();
+            $table->foreignId('occupant_id')->constrained('users')->cascadeOnDelete()->nullable();
             $table->string('unit_number', 100);
             $table->integer('floor');
             $table->integer('capacity_count');

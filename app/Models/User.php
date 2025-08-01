@@ -15,11 +15,16 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Spatie\Permission\Traits\HasRoles;
 use App\Models\Property;
-
+use App\Models\Unit;
+use App\Models\Contact;
+use App\Models\Payment;
+use App\Models\Document;
+use App\Models\Inspection;
+use App\Models\ServiceRequest;
 
 class User extends Authenticatable
 {
-    use HasApiTokens, HasFactory, Notifiable, SoftDeletes, LogsActivity,HasRoles;
+    use HasApiTokens, HasFactory, Notifiable, SoftDeletes, LogsActivity, HasRoles;
 
     const TYPE_ADMIN = 'admin';
     const TYPE_REGULAR_ADMIN = 'regular_admin';
@@ -207,8 +212,54 @@ class User extends Authenticatable
 
     public function properties()
     {
-        return $this->hasMany(Property::class,'property_manager_id');
+        // return $this->hasMany(Property::class,'property_manager_id');
+        return $this->hasMany(Property::class);
     }
+
+    // Units where this user is the current occupant (tenant or owner)
+    public function occupiedUnits()
+    {
+        return $this->hasMany(Unit::class, 'occupant_id');
+    }
+
+    // Units where this user is assigned as the tenant manager
+    public function managedUnits()
+    {
+        return $this->hasMany(Unit::class, 'tenant_manager_id');
+    }
+
+
+    public function contacts()
+    {
+        return $this->hasMany(Contact::class);
+    }
+
+    public function inspections()
+    {
+        return $this->hasMany(Inspection::class);
+    }
+
+
+    public function payments()
+    {
+        return $this->hasMany(Payment::class);
+    }
+
+    public function reminders()
+    {
+        return $this->hasMany(Reminder::class);
+    }
+
+    public function documents()
+    {
+        return $this->hasMany(Document::class);
+    }
+
+    public function serviceRequest()
+    {
+        return $this->hasMany(ServiceRequest::class);
+    }
+
 
     /**
      * The "booted" method of the model.
