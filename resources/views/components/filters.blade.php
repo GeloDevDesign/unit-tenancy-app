@@ -6,6 +6,7 @@
     'hasSearch' => false,
     'hasUserType' => false,
     'hasFilters' => false,
+    'filterData' => [],
     'hasGender',
     'searchPlaceholder' => null,
     // 'noPerPage' => false
@@ -28,6 +29,24 @@
     <form action="{{ $action }}" method="get">
         <x-admin-panel>
             <div class="row">
+
+
+                @if ($hasFilters)
+                    <div class="col-md-2 mb-2 mb-xl-0">
+                        <x-select2 :label="'Filter'" :icon="'ph-user-circle'" name="user">
+                            <option value="">-- Filter Data --</option>
+                            @if ($filterData)
+                                @foreach ($filterData as $data)
+                                    <option value="{{ $data }}"
+                                        {{ isset($_GET['user']) && $_GET['user'] == $user->id ? 'selected' : '' }}>
+                                        {{ $data }}</option>
+                                @endforeach
+                            @endif
+                        </x-select2>
+                    </div>
+                @endif
+
+
                 @if ($hasUsers)
                     <div class="col-md-2 mb-2 mb-xl-0">
                         <x-select2 :label="'Users'" :icon="'ph-user-circle'" name="user">
@@ -111,27 +130,8 @@
                 @endif
 
 
-                @if ($hasFilters)
-                    <div class="col-md-2 mb-2 mb-xl-0">
-                        <label for="">
-                            Filter
-                        </label>
-                        <div class="input-group mt-1">
 
-                            <span class="input-group-text">
-                                <i class="ph-user-circle"></i>
-                            </span>
-                            <select class="form-select" name="type" :error="$errors->first('type')">
-                                <option value="">-- Select Type --</option>
-                                @foreach (\App\Models\User::$types as $type => $val)
-                                    <option value="{{ $type }}"
-                                        {{ request()->input('type') == $type ? 'selected' : '' }}>{{ $val }}
-                                    </option>
-                                @endforeach
-                            </select>
-                        </div>
-                    </div>
-                @endif
+
 
 
                 {{-- @if (!$noPerPage)

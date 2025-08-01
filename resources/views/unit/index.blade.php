@@ -6,14 +6,14 @@
 
 @section('content')
     <div class="text-end mb-4">
-        <a href="{{ route('property.create') }}">
-            <x-button type="button" class="btn-primary pull-right me-2" :action="'add'">
+        <a href="{{ route('unit.create') }}">
+            <x-button type=" button" class="btn-primary pull-right me-2" :action="'add'">
                 Register New Unit
             </x-button>
         </a>
     </div>
 
-    <x-filters :action="route('unit.index')" :has-daterange="false" :has-user-type="false" :has-search="true" :has-search="true" :search-placeholder="'Property Name'">
+    <x-filters :action="route('unit.index')" :has-search="true" :has-filters="true" :search-placeholder="'Property Name'">
     </x-filters>
 
     <div class="row">

@@ -17,17 +17,14 @@ return new class extends Migration
             $table->foreignId('tenant_manager_id')->constrained('users')->cascadeOnDelete();
             $table->foreignId('occupant_id')->constrained('users')->cascadeOnDelete()->nullable();
 
-            $table->string('bulding', 5);
-            $table->unsignedInteger('floor'); 
-            $table->unsignedInteger('building_number'); 
-            $table->string('unit_number')->virtualAs(
-                "concat(bulding, '-', lpad(building_number, 6, '0'), '-', floor)"
-            );
-            
+            $table->unsignedInteger('floor');
+            $table->unsignedInteger('building_number');
+            $table->string('string', 255);
+
             $table->integer('capacity_count');
             $table->integer('sqm_size');
             $table->enum('occupant_type', ['tenant', 'owner']);
-            $table->enum('status', ['available', 'occupied']);
+            $table->enum('status', ['available', 'occupied'])->default('available');
             $table->softDeletes();
             $table->timestamps();
         });

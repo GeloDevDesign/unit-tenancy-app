@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Unit;
 use Illuminate\Http\Request;
 use App\Models\Property;
+use App\Models\GeneralSetting;
 
 class UnitController extends Controller
 {
@@ -38,7 +39,15 @@ class UnitController extends Controller
      */
     public function create()
     {
-        //
+        $title = 'Property - Dashboard';
+
+        $property = [];
+        $generalSettings = GeneralSetting::find(1);
+        $contents = optional($generalSettings)->dashboard_text ?? '';
+
+        $filters  = [];
+
+        return view('unit.create', compact('title', 'contents',  'filters', 'property'));
     }
 
     /**
