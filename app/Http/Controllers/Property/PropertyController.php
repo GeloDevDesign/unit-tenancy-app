@@ -13,7 +13,7 @@ class PropertyController extends Controller
 
     public function index(Request $request)
     {
-        $query = Property::with('user');
+        $query = Property::with(['user', 'units']);
 
         if ($search = $request->input('search')) {
             $query->where('name', 'like', '%' . $search . '%')
@@ -22,7 +22,14 @@ class PropertyController extends Controller
 
         $properties = $query->latest()->paginate(10);
 
-
+        // Modify the items in the paginated result
+        $properties->setCollection(
+            $properties->getCollection()->map(function ($property) {
+                $property->total_units = $property->units->count();
+                $property->occupied_units = $property->units->where('status', 'occupied')->count();
+                return $property;
+            })
+        );
 
         return view('property-manager.index', [
             'title' => 'All Properties',
@@ -30,6 +37,9 @@ class PropertyController extends Controller
             'filters' => $request->only('search'),
         ]);
     }
+
+
+
 
 
 

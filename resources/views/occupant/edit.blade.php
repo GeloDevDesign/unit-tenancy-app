@@ -17,10 +17,10 @@
 @endsection
 
 @section('content')
-    <x-card :heading="'Edit Unit Form'">
-        @include('unit.form2', [
-            'unit' => $unit,
-            'action' => route('unit.update', ['unit' => $unit]),
+    <x-card :heading="'Edit Property Form'">
+        @include('property-manager.form', [
+            'property' => $property,
+            'action' => route('property.update', ['property' => $property]),
         ])
 
     </x-card>

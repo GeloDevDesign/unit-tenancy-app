@@ -30,6 +30,7 @@
                                     <th>Capacity Count</th>
                                     <th>Square Meter</th>
                                     <th>Occupant Type</th>
+                                    <th>Occupant</th>
                                     <th>Status</th>
                                     <th>Tenant Manager</th>
                                     <th>Action</th>
@@ -53,6 +54,7 @@
                                         <td class="table-td">
                                             {{ $unit->capacity_count }}
                                         </td>
+
                                         <td class="table-td">
                                             {{ $unit->sqm_size }}
                                         </td>
@@ -60,6 +62,9 @@
                                         <td class="table-td">
                                             {{ $unit->occupant_type }}
                                         </td>
+
+                                        <td>{{ $unit->occupant?->first_name . ' ' . $unit->occupant?->last_name ?? 'N/A' }}</td>
+
                                         <td class="table-td">
 
                                             @if ($unit->status === 'available')

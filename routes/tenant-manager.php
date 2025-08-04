@@ -1,12 +1,12 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\TenantManager\TenantManagerController;
+use App\Http\Controllers\Occupant\OccupantController;
 
-Route::middleware(['auth.tenantManager'/* , 'XSS' */])
+Route::middleware(['role:tenant_manager'/* , 'XSS' */])
   ->name('tenant-manager.')
   ->prefix('tenant-manager')
   ->namespace('App\Http\Controllers\TenantManager')->group(function () {
 
-    Route::get('/', [TenantManagerController::class, 'index'])->name('index');
+    Route::get('/', [OccupantController::class, 'index'])->name('index');
   });

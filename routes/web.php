@@ -34,7 +34,7 @@ Route::get('/', function () {
 
         if (authUser()->isTenant()) {
 
-            return to_route('tenant.index');
+            return to_route('occupant.index');
         }
 
         if (authUser()->isTenantManager()) {
@@ -50,7 +50,7 @@ Route::get('/', function () {
 
         if (authUser()->isOwner()) {
 
-            return to_route('owner.index');
+            return to_route('occupant.index');
         }
 
         if (authUser()->isAccountant()) {
@@ -62,9 +62,8 @@ Route::get('/', function () {
 
 require __DIR__ . '/auth.php';
 require __DIR__ . '/admin.php';
-require __DIR__ . '/tenant.php';
 require __DIR__ . '/tenant-manager.php';
-require __DIR__ . '/owner.php';
 require __DIR__ . '/accountant.php';
 require __DIR__ . '/property.php';
 require __DIR__ . '/unit.php';
+require __DIR__ . '/occupant.php';

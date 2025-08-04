@@ -42,9 +42,9 @@ class Unit extends Model
     }
 
 
-    public function user(): BelongsTo
+    public function occupant(): BelongsTo
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class, 'occupant_id');
     }
 
 
