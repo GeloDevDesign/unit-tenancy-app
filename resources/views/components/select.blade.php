@@ -12,7 +12,7 @@
 @endphp
 
 {{-- <div class="form-group form-default mb-5"> --}}
-<div class="form-group form-default" style="margin-top: 1.25rem; margin-bottom: 1.25rem;">
+<div class="form-group form-default">
    <div>
       @if ($tooltip) 
          <span  data-toggle="tooltip" data-placement="right" title="{{ $tooltip }}" style = "cursor: pointer;">

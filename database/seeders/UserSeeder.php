@@ -70,7 +70,7 @@ class UserSeeder extends Seeder
             ],
             [
                 'first_name' => 'Tenant',
-                'last_name' => 'tenant',
+                'last_name' => 'fIRST',
                 'email' => 'tenant@gmail.com',
                 'password' => Hash::make('admin123'),
                 'type' => User::TENANT,
@@ -78,7 +78,7 @@ class UserSeeder extends Seeder
             ],
             [
                 'first_name' => 'Tenant',
-                'last_name' => 'manager',
+                'last_name' => 'First',
                 'email' => 'tenantmanager1@gmail.com',
                 'password' => Hash::make('admin123'),
                 'type' => User::TENANT_MANAGER,
@@ -86,7 +86,7 @@ class UserSeeder extends Seeder
             ],
             [
                 'first_name' => 'Tenant',
-                'last_name' => 'manager',
+                'last_name' => 'Second',
                 'email' => 'tenantmanager2@gmail.com',
                 'password' => Hash::make('admin123'),
                 'type' => User::TENANT_MANAGER,

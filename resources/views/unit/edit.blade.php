@@ -18,9 +18,9 @@
 
 @section('content')
     <x-card :heading="'Edit Property Form'">
-        @include('property-manager.form', [
-            'property' => $property,
-            'action' => route('property.update', ['property' => $property]),
+        @include('unit.form', [
+            'unit' => $unit,
+            'action' => route('unit.update', ['unit' => $unit]),
         ])
 
     </x-card>

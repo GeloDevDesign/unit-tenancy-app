@@ -19,7 +19,7 @@
 
         <div class="col-12 col-md-4">
             <x-input-label class="label-" for="building" :value="__('Building')" />
-            <x-text-input id="location" name="building" class="block mt-1 w-full" :icon="'ph-buildings'" :value="optional($property)->location ? optional($property)->location : old('building')"
+            <x-text-input id="location" name="building" class="block mt-1 w-full" :icon="'ph-buildings'" :value="optional($property)->building ? optional($property)->building : old('building')"
                 :error="$errors->get('building')" />
             <x-input-error :messages="$errors->get('building')" class="mt-2" />
         </div>

@@ -6,14 +6,14 @@
 
 @section('content')
     <div class="text-end mb-4">
-        <a href="{{ route('property.create') }}">
-            <x-button type="button" class="btn-primary pull-right me-2" :action="'add'">
+        <a href="{{ route('unit.create') }}">
+            <x-button type=" button" class="btn-primary pull-right me-2" :action="'add'">
                 Register New Unit
             </x-button>
         </a>
     </div>
 
-    <x-filters :action="route('unit.index')" :has-daterange="false" :has-user-type="false" :has-search="true" :has-search="true" :search-placeholder="'Property Name'">
+    <x-filters :action="route('unit.index')" :has-search="true" :has-filters="true" :search-placeholder="'Property Name'">
     </x-filters>
 
     <div class="row">
@@ -26,13 +26,12 @@
                                 <tr>
                                     <th>#</th>
                                     <th>Unit Number</th>
-                                    <th>Location</th>
                                     <th>Floor</th>
                                     <th>Capacity Count</th>
                                     <th>Square Meter</th>
                                     <th>Occupant Type</th>
-                                    <th>Tenant Manager</th>
                                     <th>Status</th>
+                                    <th>Tenant Manager</th>
                                     <th>Action</th>
                                 </tr>
                             </thead>
@@ -43,28 +42,38 @@
 
                                         <td class="table-td">
                                             <a href="{{ route('unit.edit', $unit->id) }}">
-                                                {{ $unit->name }}
+                                                {{ $unit->unit_number }}
                                             </a>
                                         </td>
 
-
-
-
                                         <td class="table-td">
-                                            {{ $unit->name }}
+                                            {{ $unit->floor }}
                                         </td>
 
                                         <td class="table-td">
-                                            <a href="{{ route('unit.edit', $unit->id) }}">
-                                                {{ $unit->name }}
-                                            </a>
+                                            {{ $unit->capacity_count }}
                                         </td>
                                         <td class="table-td">
-                                            {{ 0 }}
+                                            {{ $unit->sqm_size }}
                                         </td>
 
                                         <td class="table-td">
-                                            {{ $unit->id }}
+                                            {{ $unit->occupant_type }}
+                                        </td>
+                                        <td class="table-td">
+
+                                            @if ($unit->status === 'available')
+                                                <span
+                                                    class="badge bg-success bg-opacity-10 text-success">{{ $unit->status }}</span>
+                                            @else
+                                                <span
+                                                    class="badge bg-secondary bg-opacity-10 text-secondary">{{ $unit->status }}</span>
+                                            @endif
+
+                                        </td>
+
+                                        <td class="table-td">
+                                            {{ $unit->tenantManager->first_name . ' ' . $unit->tenantManager->last_name }}
                                         </td>
 
                                         <td>
