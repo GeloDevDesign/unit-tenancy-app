@@ -73,7 +73,7 @@
                                     </tr>
                                 @empty
                                     <tr>
-                                        <td colspan="6" class="text-center">No Property Available</td>
+                                        <td colspan="7" class="text-center">No Property Available</td>
                                     </tr>
                                 @endforelse
                             </tbody>

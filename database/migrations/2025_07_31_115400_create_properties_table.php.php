@@ -16,8 +16,8 @@ return new class extends Migration
             $table->foreignId('property_manager_id')->constrained('users')->cascadeOnDelete();
             $table->string('name', 100);
             $table->string('location', 255);
-            $table->string('building', 10)->nullable() ; //TOWER-A BULDING-1 WING-1
-            
+            $table->string('building', 10)->unique()->nullable(); //TOWER-A BULDING-1 WING-1
+
             $table->timestamps();
             $table->softDeletes();
         });

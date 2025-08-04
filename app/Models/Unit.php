@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use App\Models\ServiceRequest;
 use App\Models\Amenity;
 use App\Models\Property;
+use App\Models\User;
 
 class Unit extends Model
 {
@@ -21,7 +22,7 @@ class Unit extends Model
         'occupant_id',
         'unit_number',
         'bulding',
-        'building_number',
+        'occupant_type',
         'floor',
         'capacity_count',
         'sqm_size',
@@ -39,6 +40,20 @@ class Unit extends Model
     {
         return $this->hasMany(ServiceRequest::class);
     }
+
+
+    public function user(): BelongsTo
+    {
+        return $this->belongsTo(User::class);
+    }
+
+
+    public function tenantManager()
+    {
+        return $this->belongsTo(User::class, 'tenant_manager_id');
+    }
+
+
 
 
     public function property(): BelongsTo
