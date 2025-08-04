@@ -47,8 +47,30 @@
 
     <div class="row mt-3">
 
+        {{-- Occupant type --}}
+        <div class="col-12 col-md-3 flex items-start">
+            <x-select :label="'Occupant Type'" :icon="'ph-user-circle'" name="occupant_type" id="occupant_type">
+
+                <option value="owner"
+                    {{ old('occupant_type', optional($unit)->occupant_type) === 'Owner' ? 'selected' : '' }}>
+                    Owner
+                </option>
+                <option value="tenant"
+                    {{ old('occupant_type', optional($unit)->occupant_type) === 'Tenant' ? 'selected' : '' }}>
+                    Tenant
+                </option>
+
+                <option value="no occupant"
+                    {{ old('occupant_type', optional($unit)->occupant_type) === 'No occupant' ? 'selected' : '' }}>
+                    No occupant
+                </option>
+            </x-select>
+            <x-input-error :messages="$errors->get('occupant_type')" class="mt-2" />
+        </div>
+
         {{-- Capacity Count --}}
-        <div class="col-12 col-md-4">
+
+        <div class="col-12 col-md-3">
             <x-input-label class="label-" for="capacity_count" :value="__('Capacity Count')" />
             <x-text-input id="capacity_count" name="capacity_count" class="block mt-1 w-full" :icon="'ph-buildings'"
                 :value="old('capacity_count', optional($unit)->capacity_count)" :error="$errors->get('capacity_count')" />
@@ -56,7 +78,7 @@
         </div>
 
         {{-- SQM Size --}}
-        <div class="col-12 col-md-4">
+        <div class="col-12 col-md-3">
             <x-input-label class="label-" for="sqm_size" :value="__('Square Meter')" />
             <x-text-input id="sqm_size" name="sqm_size" class="block mt-1 w-full" :icon="'ph-buildings'" :value="old('sqm_size', optional($unit)->sqm_size)"
                 :error="$errors->get('sqm_size')" />
@@ -64,7 +86,7 @@
         </div>
 
         {{-- Tenant Manager --}}
-        <div class="col-12 col-md-4 flex items-start">
+        <div class="col-12 col-md-3 flex items-start">
             <x-select :label="'Assigned Tenant Manager'" :icon="'ph-user-circle'" name="tenant_manager" id="tenant_manager">
                 @foreach ($tenantManagers as $manager)
                     <option value="{{ $manager->id }}"
@@ -75,6 +97,30 @@
             </x-select>
             <x-input-error :messages="$errors->get('tenant_manager')" class="mt-2" />
         </div>
+
+    </div>
+
+    <div class="row mt-3">
+
+        {{-- Adding tenant or owner to selected unit --}}
+        <div class="col-12 col-md-12 flex items-start">
+            <x-select :label="'Select Tenant or Owner'" :icon="'ph-user-circle'" name="occupant_id" id="occupant_id">
+
+                <option :value="{{ 0 }}" {{ old('occupant_id') == 0 ? 'selected' : '' }}>
+                    No Occupant
+                </option>
+
+                @foreach ($ownersAndTenants as $occupant)
+                    <option value="{{ $occupant->id }}" {{ old('occupant_id') == $occupant->id ? 'selected' : '' }}>
+                        {{ ucwords("{$occupant->first_name} {$occupant->last_name}") }}
+                        ({{ $occupant->roles->pluck('name')->implode(', ') }})
+                    </option>
+                @endforeach
+            </x-select>
+
+            <x-input-error :messages="$errors->get('occupant_id')" class="mt-2" />
+        </div>
+
 
     </div>
 

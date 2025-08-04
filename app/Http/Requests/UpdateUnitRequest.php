@@ -1,0 +1,42 @@
+<?php
+
+namespace App\Http\Requests;
+
+use Illuminate\Foundation\Http\FormRequest;
+
+class UpdateUnitRequest extends FormRequest
+{
+    /**
+     * Determine if the user is authorized to make this request.
+     */
+    public function authorize(): bool
+    {
+        return true;
+    }
+
+    /**
+     * Get the validation rules that apply to the request.
+     *
+     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
+     */
+    public function rules(): array
+    { {
+            return [
+                'tenant_manager' => 'required|exists:users,id',
+                'occupant_id' => 'nullable|numeric|exists:users,id',
+                'property_id' => 'required|exists:properties,id',
+                'unit_number' => [
+                    'required',
+                    'string',
+                    'max:50',
+                    'unique:units,unit_number',
+                    'regex:/^[0-9]+$/'
+                ],
+                'building' => 'required|string|exists:properties,building',
+                'floor' => 'required|integer|min:0',
+                'capacity_count' => 'required|integer|min:1',
+                'sqm_size' => 'required|numeric|min:1|max:99999.99'
+            ];
+        }
+    }
+}
