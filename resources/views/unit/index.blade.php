@@ -63,8 +63,12 @@
                                             {{ $unit->occupant_type }}
                                         </td>
 
-                                        <td>{{ $unit->occupant?->first_name . ' ' . $unit->occupant?->last_name ?? 'N/A' }}
+                                        <td>
+                                            {{ optional($unit->occupant)->first_name && optional($unit->occupant)->last_name
+                                                ? optional($unit->occupant)->first_name . ' ' . optional($unit->occupant)->last_name
+                                                : 'N/A' }}
                                         </td>
+
 
                                         <td class="table-td">
 

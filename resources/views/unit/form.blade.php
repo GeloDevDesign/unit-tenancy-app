@@ -3,7 +3,7 @@
     <div class="row mt-3">
 
         {{-- Unit Number --}}
-        <div class="col-12 col-md-3">
+        <div class="col-12 col-md-4">
             <x-input-label class="label-" for="unit_number" :value="__('Unit Number')" />
             <x-text-input id="unit_number" name="unit_number" class="block mt-1 w-full" :icon="'ph-buildings'" :value="old('unit_number', optional($unit)->unformattedId ?? $nextUnitNumber)"
                 :error="$errors->get('unit_number')" />
@@ -11,7 +11,7 @@
         </div>
 
         {{-- Floor --}}
-        <div class="col-12 col-md-3">
+        <div class="col-12 col-md-4">
             <x-input-label class="label-" for="floor" :value="__('Floor')" />
             <x-text-input id="floor" name="floor" class="block mt-1 w-full" :icon="'ph-buildings'" :value="old('floor', optional($unit)->floor)"
                 :error="$errors->get('floor')" />
@@ -19,7 +19,7 @@
         </div>
 
         {{-- Property --}}
-        <div class="col-12 col-md-3 flex items-start">
+        <div class="col-12 col-md-4 flex items-start">
             <x-select :label="'Property'" :icon="'ph-buildings'" name="property_id" id="property_id">
                 @foreach ($properties as $property)
                     <option value="{{ $property->id }}"
@@ -31,17 +31,8 @@
             <x-input-error :messages="$errors->get('property_id')" class="mt-2" />
         </div>
 
-        {{-- Building --}}
-        <div class="col-12 col-md-3 flex items-start">
-            <x-select :label="'Building'" :icon="'ph-buildings'" name="building" id="building">
-                @foreach ($buildingNumber as $building)
-                    <option value="{{ $building->building }}">
-                        {{ ucwords($building->building) }}
-                    </option>
-                @endforeach
-            </x-select>
-            <x-input-error :messages="$errors->get('building')" class="mt-2" />
-        </div>
+
+
     </div>
 
     <div class="row mt-3">

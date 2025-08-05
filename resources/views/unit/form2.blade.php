@@ -41,7 +41,7 @@
 
         {{-- Capacity Count --}}
 
-        <div class="col-12 col-md-4">
+        <div class="col-12 col-md-6">
             <x-input-label class="label-" for="capacity_count" :value="__('Capacity Count')" />
             <x-text-input id="capacity_count" name="capacity_count" class="block mt-1 w-full" :icon="'ph-buildings'"
                 :value="old('capacity_count', optional($unit)->capacity_count)" :error="$errors->get('capacity_count')" />
@@ -49,7 +49,7 @@
         </div>
 
         {{-- SQM Size --}}
-        <div class="col-12 col-md-4">
+        <div class="col-12 col-md-6">
             <x-input-label class="label-" for="sqm_size" :value="__('Square Meter')" />
             <x-text-input id="sqm_size" name="sqm_size" class="block mt-1 w-full" :icon="'ph-buildings'" :value="old('sqm_size', optional($unit)->sqm_size)"
                 :error="$errors->get('sqm_size')" />
@@ -57,18 +57,6 @@
         </div>
 
 
-        {{-- Building --}}
-        <div class="col-12 col-md-4 flex items-start">
-            <x-select :label="'Building'" :icon="'ph-buildings'" name="building" id="building">
-                @foreach ($buildingNumber as $building)
-                    <option value="{{ $building->building }}"
-                        {{ old('building', optional($building)->building) == $building->building ? 'selected' : '' }}>
-                        {{ ucwords($building->building) }}
-                    </option>
-                @endforeach
-            </x-select>
-            <x-input-error :messages="$errors->get('building')" class="mt-2" />
-        </div>
 
 
 

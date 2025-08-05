@@ -60,11 +60,9 @@ class UnitController extends Controller
 
     public function store(StoreUnitRequest $request)
     {
-
         $validated = $request->only([
             'tenant_manager',
             'unit_number',
-            'building',
             'floor',
             'capacity_count',
             'sqm_size',
@@ -72,20 +70,18 @@ class UnitController extends Controller
         ]);
 
         $nextUnitNumber = $this->getNextUnitNumber();
+        $property = $request->user()->properties()->findOrFail($validated['property_id']);
 
         $paddedUnitNumber = str_pad($nextUnitNumber, 5, '0', STR_PAD_LEFT);
-        $unitNumber = "{$validated['floor']}-{$paddedUnitNumber}-{$validated['building']}";
+        $unitNumber = "{$validated['floor']}-{$paddedUnitNumber}-{$property->building}";
 
         if (Unit::where('unit_number', $unitNumber)->exists()) {
             return back()->withErrors(['unit_number' => 'The generated unit number already exists.'])->withInput();
         }
 
-        $property = $request->user()->properties()->findOrFail($validated['property_id']);
-
         $unit = $property->units()->create([
             'tenant_manager_id' => $validated['tenant_manager'],
-            'unit_number' => $unitNumber,
-            'building' => $validated['building'],
+            'unit_number' => $unitNumber, // ✅ Use the actual generated number
             'floor' => $validated['floor'],
             'capacity_count' => $validated['capacity_count'],
             'sqm_size' => $validated['sqm_size']
@@ -93,6 +89,7 @@ class UnitController extends Controller
 
         return to_route('unit.index')->withSuccess('Unit has been created successfully.');
     }
+
 
 
 
@@ -151,24 +148,32 @@ class UnitController extends Controller
 
     public function occupant_update(Request $request, Unit $unit)
     {
-        $validated = $request->validated([
+        $validated = $request->validate([
             'tenant_manager' => 'required|exists:users,id',
-            'occupant_id' => 'required|exists:users,id',
+            'occupant_id' => 'nullable|exists:users,id',
         ]);
 
-      
-
+        // Checking the role of new occupant
+        if (!empty($validated['occupant_id'])) {
+            $newOccupantRole = optional(User::find($validated['occupant_id']))
+                ->roles()
+                ->pluck('name')
+                ->first();
+        } else {
+            $newOccupantRole = null;
+        }
 
         // Update the unit
         $unit->update([
             'tenant_manager_id' => $validated['tenant_manager'],
             'occupant_id' => $validated['occupant_id'] ?? null,
             'occupant_type' => $newOccupantRole ?? 'no occupant',
+            'status' => $newOccupantRole ? 'occupied' : 'available'
         ]);
-
 
         return to_route('unit.index')->withSuccess('Unit updated successfully.');
     }
+
 
 
     /**
@@ -177,23 +182,24 @@ class UnitController extends Controller
     public function update(UpdateUnitRequest $request, Unit $unit)
     {
         $validated = $request->only([
+            'property_id',
             'unit_number',
-            'building',
             'floor',
             'capacity_count',
-            'sqm_size',
+            'sqm_size'
         ]);
 
+        // Get the property and its building
+        $property = $request->user()->properties()->findOrFail($validated['property_id']);
 
         // Format unit number as: floor-00001-building
         $paddedUnitId = str_pad($validated['unit_number'], 5, '0', STR_PAD_LEFT);
-        $unitNumber = "{$validated['floor']}-{$paddedUnitId}-{$validated['building']}";
+        $unitNumber = "{$validated['floor']}-{$paddedUnitId}-{$property->building}";
 
-        // Check for duplicate unit number, excluding current unit
+        // Check for duplicate unit number, excluding the current unit
         $exists = Unit::where('unit_number', $unitNumber)
             ->where('id', '!=', $unit->id)
             ->exists();
-
 
         if ($exists) {
             return back()->withErrors([
@@ -201,18 +207,17 @@ class UnitController extends Controller
             ])->withInput();
         }
 
-        // Update the unit
         $unit->update([
             'unit_number' => $unitNumber,
-            'building' => $validated['building'],
+            'building' => $property->building,
             'floor' => $validated['floor'],
             'capacity_count' => $validated['capacity_count'],
             'sqm_size' => $validated['sqm_size'],
         ]);
 
-
         return to_route('unit.index')->withSuccess('Unit updated successfully.');
     }
+
 
 
 
