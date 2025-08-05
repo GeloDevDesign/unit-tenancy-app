@@ -50,8 +50,7 @@ class UnitController extends Controller
             ->get(['id', 'first_name', 'last_name', 'email']);
 
         $properties = Property::with('user')
-            ->get(['id', 'name'])
-            ->unique('name')
+            ->get(['id', 'name', 'building'])
             ->values();
 
         $buildingNumber = Property::with('user')->get(['id', 'building']);
@@ -110,49 +109,51 @@ class UnitController extends Controller
         // Get the middle part (ID number) and remove leading zeros
         $unformattedId = ltrim($parts[1], '0'); // from "00002" ➜ "2"
 
-        $nextUnitNumber = $this->getNextUnitNumber();
 
-        $tenantManagers = User::with('roles')
-            ->whereHas('roles', fn($q) => $q->where('name', 'tenant_manager'))
-            ->get(['id', 'first_name', 'last_name', 'email']);
 
         $properties = Property::with('user')
-            ->get(['id', 'name'])
-            ->unique('name')
-            ->values();
+            ->get(['id', 'name', 'building']);
 
-        $ownersAndTenants  = User::with('roles')
-            ->whereHas('roles', fn($q) => $q->whereIn('name', ['tenant', 'owner']))
-            ->get(['id', 'first_name', 'last_name', 'email']);
 
         $buildingNumber = Property::with('user')->get(['id', 'building']);
 
         return view('unit.edit', compact(
             'unit',
             'title',
-            'nextUnitNumber',
             'buildingNumber',
-            'tenantManagers',
             'properties',
-            'unformattedId',
+            'unformattedId'
+        ));
+    }
+
+
+    public function show_occupant(Request $request, Unit $unit)
+    {
+
+        $title = 'Edit Unit Occupant';
+
+        $tenantManagers = User::with('roles')
+            ->whereHas('roles', fn($q) => $q->where('name', 'tenant_manager'))
+            ->get(['id', 'first_name', 'last_name', 'email']);
+
+        $ownersAndTenants  = User::with('roles')
+            ->whereHas('roles', fn($q) => $q->whereIn('name', ['tenant', 'owner']))
+            ->get(['id', 'first_name', 'last_name', 'email']);
+
+        return view('unit.edit-occupant', compact(
+            'unit',
+            'title',
+            'tenantManagers',
             'ownersAndTenants'
         ));
     }
 
 
-    /**
-     * ✅ Update the unit in storage
-     */
-    public function update(UpdateUnitRequest $request, Unit $unit)
+    public function occupant_update(Request $request, Unit $unit)
     {
-        $validated = $request->only([
-            'tenant_manager',
-            'unit_number',
-            'building',
-            'floor',
-            'capacity_count',
-            'sqm_size',
-            'occupant_id'
+        $validated = $request->validate([
+            'tenant_manager' => 'required|exists:users,id',
+            'occupant_id' => 'nullable|exists:users,id',
         ]);
 
         if (!empty($validated['occupant_id'])) {
@@ -164,6 +165,32 @@ class UnitController extends Controller
             $validated['occupant_id'] = null;
             $newOccupantRole = null;
         }
+
+        // Update the unit
+        $unit->update([
+            'tenant_manager_id' => $validated['tenant_manager'],
+            'occupant_id' => $validated['occupant_id'],
+            'occupant_type' => $newOccupantRole ?? 'no occupant',
+            'status' => $newOccupantRole ? 'occupied' : 'available',
+        ]);
+
+        return to_route('unit.index')->withSuccess('Unit updated successfully.');
+    }
+
+
+
+    /**
+     * ✅ Update the unit in storage
+     */
+    public function update(UpdateUnitRequest $request, Unit $unit)
+    {
+        $validated = $request->only([
+            'unit_number',
+            'building',
+            'floor',
+            'capacity_count',
+            'sqm_size',
+        ]);
 
 
         // Format unit number as: floor-00001-building
@@ -184,15 +211,11 @@ class UnitController extends Controller
 
         // Update the unit
         $unit->update([
-            'tenant_manager_id' => $validated['tenant_manager'],
             'unit_number' => $unitNumber,
             'building' => $validated['building'],
             'floor' => $validated['floor'],
             'capacity_count' => $validated['capacity_count'],
             'sqm_size' => $validated['sqm_size'],
-            'occupant_id' => $validated['occupant_id'] ?? null,
-            'occupant_type' => $newOccupantRole ?? 'no occupant',
-            'status' => $newOccupantRole ? 'occupied' : 'available'
         ]);
 
 

@@ -14,4 +14,10 @@ Route::middleware(['role:property_manager,admin'])
     Route::get('/{unit}', [UnitController::class, 'edit'])->name('edit');
     Route::put('/{unit}', [UnitController::class, 'update'])->name('update');
     Route::delete('/{unit}', [UnitController::class, 'destroy'])->name('destroy');
+
+
+
+    // CUSTOME ROUTE FOR ASSIGINING NEW TENANT OR OWNER
+    Route::get('/occupant/{unit}', [UnitController::class, 'show_occupant'])->name('occupant');
+    Route::put('/occupant/{unit}', [UnitController::class, 'occupant_update'])->name('occupant.update');
   });

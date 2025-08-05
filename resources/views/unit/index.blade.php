@@ -63,7 +63,8 @@
                                             {{ $unit->occupant_type }}
                                         </td>
 
-                                        <td>{{ $unit->occupant?->first_name . ' ' . $unit->occupant?->last_name ?? 'N/A' }}</td>
+                                        <td>{{ $unit->occupant?->first_name . ' ' . $unit->occupant?->last_name ?? 'N/A' }}
+                                        </td>
 
                                         <td class="table-td">
 
@@ -82,8 +83,8 @@
                                         </td>
 
                                         <td>
-                                            <x-entity-actions :edit="route('unit.edit', $unit)" :entity-id="'unit-' . $unit->id" :delete="route('unit.destroy', $unit)"
-                                                :name="$unit->name" :show="route('unit.edit', $unit)">
+                                            <x-entity-actions :assign-occupant="true" :edit="route('unit.edit', $unit)" :occupant="route('unit.occupant', $unit)"
+                                                :entity-id="'unit-' . $unit->id" :delete="route('unit.destroy', $unit)" :name="$unit->name" :show="route('unit.edit', $unit)">
                                             </x-entity-actions>
                                         </td>
 

@@ -24,7 +24,7 @@
                 @foreach ($properties as $property)
                     <option value="{{ $property->id }}"
                         {{ old('property_id', optional($unit)->property_id) == $property->id ? 'selected' : '' }}>
-                        {{ ucwords($property->name) }}
+                        {{ ucwords($property->name) }} - {{ ucwords($property->building) }}
                     </option>
                 @endforeach
             </x-select>
@@ -35,8 +35,7 @@
         <div class="col-12 col-md-3 flex items-start">
             <x-select :label="'Building'" :icon="'ph-buildings'" name="building" id="building">
                 @foreach ($buildingNumber as $building)
-                    <option value="{{ $building->building }}"
-                        {{ old('building', optional($building)->building) == $building->building ? 'selected' : '' }}>
+                    <option value="{{ $building->building }}">
                         {{ ucwords($building->building) }}
                     </option>
                 @endforeach
