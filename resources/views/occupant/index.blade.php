@@ -5,15 +5,7 @@
 @endsection
 
 @section('content')
-    <div class="text-end mb-4">
-        <a href="{{ route('property.create') }}">
-            <x-button type="button" class="btn-primary pull-right me-2" :action="'add'">
-                Add New Property
-            </x-button>
-        </a>
-    </div>
-
-    <x-filters :action="route('property.index')" :users="$properties" :has-daterange="false" :has-user-type="false" :has-search="true" :search-placeholder="'Property Name'">
+    <x-filters :action="route('property.index')" :users="null" :has-daterange="false" :has-user-type="false" :has-search="true" :search-placeholder="'Property Name'">
     </x-filters>
 
     <div class="row">
@@ -28,55 +20,50 @@
                                     <th>Name</th>
                                     <th>Location</th>
                                     <th>Building</th>
+                                    <th>Floor</th>
                                     <th>Occupied Units</th>
                                     <th>Number of Units</th>
                                     <th>Action</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                @forelse ($properties as $property)
-                                    <tr class="{{ $loop->iteration % 2 == 0 ? 'odd' : 'even' }} table-tr">
-                                        <td class="table-td">{{ $loop->iteration }}</td>
 
-                                        <td class="table-td">
-                                            <a href="{{ route('property.edit', $property->id) }}">
-                                                {{ $property->name ?? 'N/A' }}
-                                            </a>
+                                @if ($units->count() > 0)
+                                    @foreach ($units as $index => $unit)
+                                        <tr>
+                                            <td>{{ $units->firstItem() + $index }}</td>
+                                            <td>{{ $unit->property->name ?? 'N/A' }}</td>
 
+                                            <td>{{ $unit->property->location ?? 'N/A' }}</td>
+                                            <td>{{ $unit->property->building ?? 'N/A' }}</td>
 
-                                        <td class="table-td">
-                                            {{ $property->location ?? 'N/A' }}
-                                        </td>
+                                            <td>
+                                                {{ $unit->floor }}
+                                            </td>
 
+                                            <td>
+                                                @if ($unit->status === 'occupied')
+                                                    <span class="badge bg-success bg-opacity-10 text-success">owned</span>
+                                                @else
+                                                    <span class="badge bg-secondary bg-opacity-10 text-secondary">not
+                                                        owned</span>
+                                                @endif
 
+                                            </td>
 
-                                        </td>
-                                        <td class="table-td">
-
-                                            {{ $property->building ?? 'N/A' }}
-
-                                        </td>
-                                        <td class="table-td">
-                                            {{ $property->occupied_units }}
-                                        </td>
-
-                                        <td class="table-td">
-                                            {{ $property->total_units }}
-                                        </td>
-
-
-                                        <td>
-                                            <x-entity-actions :edit="route('property.edit', $property)" :entity-id="'property-' . $property->id" :delete="route('property.destroy', $property)"
-                                                :name="$property->name" :show="route('property.edit', $property)">
-                                            </x-entity-actions>
-                                        </td>
-
-                                    </tr>
-                                @empty
+                                            <td>{{ $unit->property->units_count ?? 'N/A' }}</td>
+                                            <td>
+                                                <a class="btn btn-info btn-sm">View</a>
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                @else
                                     <tr>
-                                        <td colspan="7" class="text-center">No Property Available</td>
+                                        <td colspan="7" class="text-center">No Units Available</td>
                                     </tr>
-                                @endforelse
+                                @endif
+
+
                             </tbody>
                         </x-table-container>
                     </div>

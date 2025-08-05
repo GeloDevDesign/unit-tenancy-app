@@ -1,17 +1,16 @@
 <x-entity-form :model="$unit" :action="$action" :return-url="route('unit.index')">
-  
-    <div class="row mt-3">
 
+    <div class="row mt-3">
 
         <div class="col-12 col-md-6 flex items-start">
             <x-select :label="'Select Tenant or Owner'" :icon="'ph-user-circle'" name="occupant_id" id="occupant_id">
-
-                <option value="0" {{ old('occupant_id') == 0 ? 'selected' : '' }}>
+                <option value="" {{ old('occupant_id', optional($unit)->occupant_id) == '' ? 'selected' : '' }}>
                     No Occupant
                 </option>
 
                 @foreach ($ownersAndTenants as $occupant)
-                    <option value="{{ $occupant->id }}" {{ old('occupant_id') == $occupant->id ? 'selected' : '' }}>
+                    <option value="{{ $occupant->id }}"
+                        {{ old('occupant_id', optional($unit)->occupant_id) == $occupant->id ? 'selected' : '' }}>
                         {{ ucwords("{$occupant->first_name} {$occupant->last_name}") }}
                         ({{ $occupant->roles->pluck('name')->implode(', ') }})
                     </option>
@@ -19,7 +18,9 @@
             </x-select>
 
             <x-input-error :messages="$errors->get('occupant_id')" class="mt-2" />
+
         </div>
+
 
 
         {{-- Tenant Manager --}}
