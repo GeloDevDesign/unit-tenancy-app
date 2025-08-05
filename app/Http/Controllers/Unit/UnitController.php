@@ -151,32 +151,24 @@ class UnitController extends Controller
 
     public function occupant_update(Request $request, Unit $unit)
     {
-        $validated = $request->validate([
+        $validated = $request->validated([
             'tenant_manager' => 'required|exists:users,id',
-            'occupant_id' => 'nullable|exists:users,id',
+            'occupant_id' => 'required|exists:users,id',
         ]);
 
-        if (!empty($validated['occupant_id'])) {
-            $newOccupantRole = optional(User::find($validated['occupant_id']))
-                ->roles()
-                ->pluck('name')
-                ->first();
-        } else {
-            $validated['occupant_id'] = null;
-            $newOccupantRole = null;
-        }
+      
+
 
         // Update the unit
         $unit->update([
             'tenant_manager_id' => $validated['tenant_manager'],
-            'occupant_id' => $validated['occupant_id'],
+            'occupant_id' => $validated['occupant_id'] ?? null,
             'occupant_type' => $newOccupantRole ?? 'no occupant',
-            'status' => $newOccupantRole ? 'occupied' : 'available',
         ]);
+
 
         return to_route('unit.index')->withSuccess('Unit updated successfully.');
     }
-
 
 
     /**

@@ -1,7 +1,5 @@
 <x-entity-form :model="$unit" :action="$action" :return-url="route('unit.index')">
-
-
-
+  
     <div class="row mt-3">
 
 
