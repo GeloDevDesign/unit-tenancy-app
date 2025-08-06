@@ -2,6 +2,8 @@
     'entityId',
     'edit',
     'noEdit' => false,
+    'viewUnit' => false,
+    'viewRoute' => null,
     'editLabel' => 'Edit',
     'noDelete' => false,
     'delete' => null,
@@ -36,7 +38,14 @@
         </a>
     @endif
 
-    
+    @if ($viewUnit)
+        <a type="button" title="Edit" onclick="location.href='{{ $viewRoute }}'"
+            class="btn btn-success edit-btn btn-action btn-no-radius btn-square">
+            <i class="fa fa fa-eye" aria-hidden="true" style="margin-right: 0;"></i>
+        </a>
+    @endif
+
+
     @if (!$noEdit)
         <a type="button" title="Edit" onclick="location.href='{{ $edit }}'"
             class="btn btn-primary edit-btn btn-action btn-no-radius btn-square">

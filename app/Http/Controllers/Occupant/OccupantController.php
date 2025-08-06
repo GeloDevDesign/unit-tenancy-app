@@ -7,9 +7,9 @@ use Illuminate\Http\Request;
 use App\Models\Unit;
 use App\Models\User;
 
+
 class OccupantController extends Controller
 {
-    //
 
     public function index(Request $request)
     {
@@ -29,6 +29,16 @@ class OccupantController extends Controller
             'title' => 'All Properties',
             'units' => $units,
             'filters' => $request->only('search'),
+        ]);
+    }
+
+    public function show(Unit $unit)
+    {
+        $unit->load(['property']);
+
+        return view('occupant.show', [
+            'title' => 'All Properties',
+            'unit' => $unit
         ]);
     }
 }

@@ -11,6 +11,10 @@ use App\Models\GeneralSetting;
 use App\Http\Requests\StoreUnitRequest;
 use App\Http\Requests\UpdateUnitRequest;
 use Illuminate\Validation\Rule;
+use App\Models\HistoryUnit;
+use Carbon\Carbon;
+
+
 
 class UnitController extends Controller
 {
@@ -50,9 +54,9 @@ class UnitController extends Controller
             ->get(['id', 'first_name', 'last_name', 'email']);
 
         $properties = Property::with('user')
-            ->get(['id', 'name', 'building'])
+            ->get(['id', 'name', 'building', 'registers'])
             ->values();
-
+        dd($properties);
         $buildingNumber = Property::with('user')->get(['id', 'building']);
 
         return view('unit.create', compact('title', 'contents', 'nextUnitNumber', 'buildingNumber', 'tenantManagers', 'properties'));
@@ -151,25 +155,44 @@ class UnitController extends Controller
         $validated = $request->validate([
             'tenant_manager' => 'required|exists:users,id',
             'occupant_id' => 'nullable|exists:users,id',
+            'status' => 'required|in:move_in,move_out',
+            'move_date' => 'required|date',
         ]);
 
-        // Checking the role of new occupant
-        if (!empty($validated['occupant_id'])) {
-            $newOccupantRole = optional(User::find($validated['occupant_id']))
-                ->roles()
-                ->pluck('name')
-                ->first();
-        } else {
-            $newOccupantRole = null;
-        }
+        // FORMAT THE DATE  12/25/25 into 2025-12-25 ouput 
+        $formattedDate = Carbon::createFromFormat('m/d/Y', $validated['move_date'])->format('Y-m-d');
 
-        // Update the unit
+        // Check the role if the occupant is tenant or owner
+        $newOccupantRole = !empty($validated['occupant_id'])
+            ? optional(User::find($validated['occupant_id']))->roles()->pluck('name')->first()
+            : null;
+
+        // Update the selected or assigned unit   
         $unit->update([
             'tenant_manager_id' => $validated['tenant_manager'],
             'occupant_id' => $validated['occupant_id'] ?? null,
             'occupant_type' => $newOccupantRole ?? 'no occupant',
             'status' => $newOccupantRole ? 'occupied' : 'available'
         ]);
+
+        // This part is for history of this unit occupied
+        if ($validated['status'] === 'move_in') {
+            $unit->histories()->create([
+                'tenant_manager_id' => $validated['tenant_manager'],
+                'occupant_id' => $validated['occupant_id'],
+                'move_in' => $formattedDate,
+                'move_out' => null,
+                'status' => $validated['status']
+            ]);
+        } else {
+            $unit->histories()->create([
+                'tenant_manager_id' => $validated['tenant_manager'],
+                'occupant_id' => $validated['occupant_id'],
+                'move_in' => null,
+                'move_out' => $formattedDate,
+                'status' => $validated['status']
+            ]);
+        }
 
         return to_route('unit.index')->withSuccess('Unit updated successfully.');
     }

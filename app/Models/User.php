@@ -215,11 +215,7 @@ class User extends Authenticatable
         // return $this->hasMany(Property::class,'property_manager_id');
         return $this->hasMany(Property::class, 'property_manager_id');
     }
-
-
-
-
-
+    
     // Units where this user is the current occupant (tenant or owner)
     public function occupiedUnits()
     {

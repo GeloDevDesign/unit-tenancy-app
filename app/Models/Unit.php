@@ -11,6 +11,8 @@ use App\Models\ServiceRequest;
 use App\Models\Amenity;
 use App\Models\Property;
 use App\Models\User;
+use App\Models\HistoryUnit;
+
 
 class Unit extends Model
 {
@@ -36,6 +38,12 @@ class Unit extends Model
     }
 
 
+    public function histories()
+    {
+        return $this->hasMany(HistoryUnit::class,'unit_id');
+    }
+
+
     public function serviceRequests(): HasMany
     {
         return $this->hasMany(ServiceRequest::class);
@@ -52,9 +60,6 @@ class Unit extends Model
     {
         return $this->belongsTo(User::class, 'tenant_manager_id');
     }
-
-
-
 
     public function property(): BelongsTo
     {

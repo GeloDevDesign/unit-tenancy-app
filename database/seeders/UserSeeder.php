@@ -119,12 +119,5 @@ class UserSeeder extends Seeder
         ];
 
         User::insert($users);
-
-        // AFTER CREATING ROLE ASSIGN ROLE USING SPATIE
-        foreach ($users as $userData) {
-            if ($user = User::where('email', $userData['email'])->first()) {
-                $user->assignRole($userData['type']);
-            }
-        }
     }
 }

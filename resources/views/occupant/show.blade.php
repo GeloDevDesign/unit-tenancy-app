@@ -17,10 +17,10 @@
 @endsection
 
 @section('content')
-    <x-card :heading="'Property Form'">
-        @include('property-manager.form', [
-            'property' => new \App\Models\Property(),
-            'action' => route('property.store'),
+    <x-card :heading="'Unit Information'">
+        @include('occupant.form', [
+            'unit' => $unit,
+            'action' => null,
         ])
 
     </x-card>

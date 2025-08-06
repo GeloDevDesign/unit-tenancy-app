@@ -9,4 +9,6 @@ Route::middleware(['role:tenant,owner'/* , 'XSS' */])
   ->namespace('App\Http\Controllers\Tenant')->group(function () {
 
     Route::get('/', [OccupantController::class, 'index'])->name('index');
+    Route::get('/{unit}', [OccupantController::class, 'show'])->name('show');
+    Route::post('/', [OccupantController::class, 'show'])->name('store');
   });

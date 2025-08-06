@@ -21,7 +21,7 @@
                                     <th>Location</th>
                                     <th>Building</th>
                                     <th>Floor</th>
-                                    <th>Occupied Units</th>
+                                    <th>Status</th>
                                     <th>Number of Units</th>
                                     <th>Action</th>
                                 </tr>
@@ -53,7 +53,9 @@
 
                                             <td>{{ $unit->property->units_count ?? 'N/A' }}</td>
                                             <td>
-                                                <a class="btn btn-info btn-sm">View</a>
+                                                <x-entity-actions :edit="false" :view-route="route('occupant.show', $unit)" :no-edit="true"
+                                                    :edit-id="$unit->id" :entity-id="$unit->id" :view-unit="true">
+                                                </x-entity-actions>
                                             </td>
                                         </tr>
                                     @endforeach
