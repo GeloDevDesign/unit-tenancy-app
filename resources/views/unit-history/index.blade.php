@@ -83,11 +83,9 @@
 
                                         </td>
 
-                                        <td class="table-td">
-                                            {{ optional($unit->histories->sortByDesc('move_in')->first())->move_in }}
+                                        <td>
+                                            {{ $unit->histories[0]->move_in }}
                                         </td>
-
-
 
                                         <td class="table-td">
                                             {{ $unit->tenantManager->first_name . ' ' . $unit->tenantManager->last_name }}

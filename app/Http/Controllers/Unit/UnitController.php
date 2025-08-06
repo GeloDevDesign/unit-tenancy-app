@@ -20,7 +20,9 @@ class UnitController extends Controller
 {
     public function index(Request $request)
     {
-        $query = Unit::with(['property', 'tenantManager', 'occupant']);
+
+        $query = Unit::with(['property', 'tenantManager', 'occupant', 'histories']);
+
 
         if ($search = $request->input('search')) {
             $query->where('unit_number', 'like', '%' . $search . '%')
@@ -54,9 +56,9 @@ class UnitController extends Controller
             ->get(['id', 'first_name', 'last_name', 'email']);
 
         $properties = Property::with('user')
-            ->get(['id', 'name', 'building', 'registers'])
+            ->get(['id', 'name', 'building'])
             ->values();
-        dd($properties);
+
         $buildingNumber = Property::with('user')->get(['id', 'building']);
 
         return view('unit.create', compact('title', 'contents', 'nextUnitNumber', 'buildingNumber', 'tenantManagers', 'properties'));
@@ -163,9 +165,10 @@ class UnitController extends Controller
         $formattedDate = Carbon::createFromFormat('m/d/Y', $validated['move_date'])->format('Y-m-d');
 
         // Check the role if the occupant is tenant or owner
-        $newOccupantRole = !empty($validated['occupant_id'])
-            ? optional(User::find($validated['occupant_id']))->roles()->pluck('name')->first()
+        $newOccupantRole = $unit->occupant
+            ? $unit->occupant->roles()->pluck('name')->first()
             : null;
+
 
         // Update the selected or assigned unit   
         $unit->update([
