@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use App\Models\ServiceRequest;
 use App\Models\Amenity;
 use App\Models\Property;
@@ -37,6 +38,11 @@ class Unit extends Model
         return $this->belongsToMany(Amenity::class);
     }
 
+
+    public function occupied(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'occupant_id');
+    }
 
     public function histories()
     {

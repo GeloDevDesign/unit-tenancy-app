@@ -113,7 +113,9 @@ class UnitController extends Controller
         // Get the middle part (ID number) and remove leading zeros
         $unformattedId = ltrim($parts[1], '0'); // from "00002" ➜ "2"
 
-
+        $tenantManagers = User::with('roles')
+            ->whereHas('roles', fn($q) => $q->where('name', 'tenant_manager'))
+            ->get(['id', 'first_name', 'last_name', 'email']);
 
         $properties = Property::with('user')
             ->get(['id', 'name', 'building']);
@@ -126,7 +128,8 @@ class UnitController extends Controller
             'title',
             'buildingNumber',
             'properties',
-            'unformattedId'
+            'unformattedId',
+            'tenantManagers'
         ));
     }
 
@@ -136,10 +139,6 @@ class UnitController extends Controller
 
         $title = 'Edit Unit Occupant';
 
-        $tenantManagers = User::with('roles')
-            ->whereHas('roles', fn($q) => $q->where('name', 'tenant_manager'))
-            ->get(['id', 'first_name', 'last_name', 'email']);
-
         $ownersAndTenants  = User::with('roles')
             ->whereHas('roles', fn($q) => $q->whereIn('name', ['tenant', 'owner']))
             ->get(['id', 'first_name', 'last_name', 'email']);
@@ -147,7 +146,6 @@ class UnitController extends Controller
         return view('unit.edit-occupant', compact(
             'unit',
             'title',
-            'tenantManagers',
             'ownersAndTenants'
         ));
     }
@@ -156,50 +154,61 @@ class UnitController extends Controller
     public function occupant_update(Request $request, Unit $unit)
     {
         $validated = $request->validate([
-            'tenant_manager' => 'required|exists:users,id',
             'occupant_id' => 'nullable|exists:users,id',
             'status' => 'required|in:move_in,move_out',
             'move_date' => 'required|date',
         ]);
 
-        // FORMAT THE DATE  12/25/25 into 2025-12-25 ouput 
+        // Format date: mm/dd/yyyy to yyyy-mm-dd
         $formattedDate = Carbon::createFromFormat('m/d/Y', $validated['move_date'])->format('Y-m-d');
 
-        // Check the role if the occupant is tenant or owner
-        $newOccupantRole = $unit->occupant
-            ? $unit->occupant->roles()->pluck('name')->first()
-            : null;
+        // Check if the user is trying to move in but the unit is already occupied
+        if ($unit->occupied && $validated['status'] === 'move_in') {
+            return back()->withErrors(['status' => 'This unit is already occupied.'])->withInput();
+        }
 
+        if ($validated['status'] === 'move_in' && $validated['occupant_id'] && !$unit->occupant) {
+            // Fetch role of the new occupant (not the current occupant)
+            $newOccupant = User::find($validated['occupant_id']);
+            $newOccupantRole = $newOccupant?->roles()->pluck('name')->first() ?? 'no role';
 
-        // Update the selected or assigned unit   
-        $unit->update([
-            'tenant_manager_id' => $validated['tenant_manager'],
-            'occupant_id' => $validated['occupant_id'] ?? null,
-            'occupant_type' => $newOccupantRole ?? 'no occupant',
-            'status' => $newOccupantRole ? 'occupied' : 'available'
-        ]);
+            // Update unit to assign new occupant
+            $unit->update([
+                'occupant_id' => $validated['occupant_id'],
+                'occupant_type' => $newOccupantRole,
+                'status' => 'occupied',
+            ]);
 
-        // This part is for history of this unit occupied
-        if ($validated['status'] === 'move_in') {
+            // Create move-in history
             $unit->histories()->create([
-                'tenant_manager_id' => $validated['tenant_manager'],
                 'occupant_id' => $validated['occupant_id'],
                 'move_in' => $formattedDate,
                 'move_out' => null,
-                'status' => $validated['status']
+                'status' => 'move_in',
             ]);
         } else {
+            // Get previous occupant role before clearing it
+            $previousOccupantRole = $unit->occupant?->roles()->pluck('name')->first() ?? 'no occupant';
+
+            // Create move-out history
             $unit->histories()->create([
-                'tenant_manager_id' => $validated['tenant_manager'],
                 'occupant_id' => $validated['occupant_id'],
                 'move_in' => null,
                 'move_out' => $formattedDate,
-                'status' => $validated['status']
+                'status' => 'move_out',
+            ]);
+
+            // Clear occupant from the unit
+            $unit->update([
+                'occupant_id' => null,
+                'occupant_type' => $previousOccupantRole,
+                'status' => 'available',
             ]);
         }
 
         return to_route('unit.index')->withSuccess('Unit updated successfully.');
     }
+
 
 
 
@@ -209,6 +218,7 @@ class UnitController extends Controller
     public function update(UpdateUnitRequest $request, Unit $unit)
     {
         $validated = $request->only([
+            'tenant_manager',
             'property_id',
             'unit_number',
             'floor',
@@ -235,6 +245,7 @@ class UnitController extends Controller
         }
 
         $unit->update([
+            'tenant_manager_id' => $validated['tenant_manager'],
             'unit_number' => $unitNumber,
             'building' => $property->building,
             'floor' => $validated['floor'],

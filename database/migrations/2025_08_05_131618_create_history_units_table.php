@@ -13,8 +13,7 @@ return new class extends Migration
     {
         Schema::create('history_units', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('tenant_manager_id')->constrained('users')->cascadeOnDelete();
-            $table->foreignId('occupant_id')->constrained('users')->cascadeOnDelete();
+            $table->foreignId('occupant_id')->nullable()->constrained('users')->cascadeOnDelete();
             $table->foreignId('unit_id')->constrained('units')->cascadeOnDelete();
             $table->date('move_in')->nullable();
             $table->date('move_out')->nullable();

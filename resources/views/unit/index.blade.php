@@ -32,7 +32,6 @@
                                     <th>Occupant Type</th>
                                     <th>Occupant</th>
                                     <th>Status</th>
-                                    <th>Move in</th>
                                     <th>Tenant Manager</th>
                                     <th>Action</th>
                                 </tr>
@@ -82,11 +81,6 @@
                                             @endif
 
                                         </td>
-
-                                        <td class="table-td">
-                                            {{ optional($unit->latestHistory)->move_in }}
-                                        </td>
-
 
 
 

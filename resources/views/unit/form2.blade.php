@@ -41,7 +41,7 @@
 
         {{-- Capacity Count --}}
 
-        <div class="col-12 col-md-6">
+        <div class="col-12 col-md-4">
             <x-input-label class="label-" for="capacity_count" :value="__('Capacity Count')" />
             <x-text-input id="capacity_count" name="capacity_count" class="block mt-1 w-full" :icon="'ph-buildings'"
                 :value="old('capacity_count', optional($unit)->capacity_count)" :error="$errors->get('capacity_count')" />
@@ -49,17 +49,25 @@
         </div>
 
         {{-- SQM Size --}}
-        <div class="col-12 col-md-6">
+        <div class="col-12 col-md-4">
             <x-input-label class="label-" for="sqm_size" :value="__('Square Meter')" />
             <x-text-input id="sqm_size" name="sqm_size" class="block mt-1 w-full" :icon="'ph-buildings'" :value="old('sqm_size', optional($unit)->sqm_size)"
                 :error="$errors->get('sqm_size')" />
             <x-input-error :messages="$errors->get('sqm_size')" class="mt-2" />
         </div>
 
-
-
-
-
+        {{-- Assigned Tenant Manager --}}
+        <div class="col-12 col-md-4 flex items-start">
+            <x-select :label="'Assigned Tenant Manager'" :icon="'ph-user-circle'" name="tenant_manager" id="tenant_manager">
+                @foreach ($tenantManagers as $manager)
+                    <option value="{{ $manager->id }}"
+                        {{ old('tenant_manager', optional($unit)->tenant_manager_id) == $manager->id ? 'selected' : '' }}>
+                        {{ ucwords("{$manager->first_name} {$manager->last_name}") }} ({{ $manager->email }})
+                    </option>
+                @endforeach
+            </x-select>
+            <x-input-error :messages="$errors->get('property_id')" class="mt-2" />
+        </div>
     </div>
 
 

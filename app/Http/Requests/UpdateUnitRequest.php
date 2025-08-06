@@ -22,6 +22,7 @@ class UpdateUnitRequest extends FormRequest
     public function rules(): array
     { {
             return [
+                'tenant_manager' => 'required|exists:users,id',
                 'property_id' => 'required|exists:properties,id',
                 'unit_number' => [
                     'required',
