@@ -40,7 +40,7 @@ class Unit extends Model
 
     public function histories()
     {
-        return $this->hasMany(HistoryUnit::class,'unit_id');
+        return $this->hasMany(HistoryUnit::class, 'unit_id');
     }
 
 
@@ -53,6 +53,12 @@ class Unit extends Model
     public function occupant(): BelongsTo
     {
         return $this->belongsTo(User::class, 'occupant_id');
+    }
+
+
+    public function latestHistory()
+    {
+        return $this->hasOne(HistoryUnit::class)->latestOfMany('move_in');
     }
 
 

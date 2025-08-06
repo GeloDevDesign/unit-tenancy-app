@@ -84,8 +84,9 @@
                                         </td>
 
                                         <td class="table-td">
-                                            {{ optional($unit->histories->sortByDesc('move_in')->first())->move_in }}
+                                            {{ optional($unit->latestHistory)->move_in }}
                                         </td>
+
 
 
 

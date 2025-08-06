@@ -21,7 +21,8 @@ class UnitController extends Controller
     public function index(Request $request)
     {
 
-        $query = Unit::with(['property', 'tenantManager', 'occupant', 'histories']);
+        $query = Unit::with(['property', 'tenantManager', 'occupant', 'latestHistory']);
+
 
 
         if ($search = $request->input('search')) {
