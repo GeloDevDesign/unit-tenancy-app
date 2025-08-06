@@ -2,39 +2,62 @@
     'entityId',
     'edit',
     'noEdit' => false,
+    'viewUnit' => false,
+    'viewRoute' => null,
     'editLabel' => 'Edit',
     'noDelete' => false,
     'delete' => null,
     'deleteMsg' => null,
     'hasDownload' => false,
     'downloadUrl' => null,
+    'assignOccupant' => false,
+    'occupant' => null,
     'name' => '',
 ])
 
 @if ($hasDownload && !$downloadUrl)
     @php
-        throw new Exception("Download button is enabled, but no download url provided.", 1);
+        throw new Exception('Download button is enabled, but no download url provided.', 1);
     @endphp
 @endif
 
 <div class="icon-btn">
 
-    @if($hasDownload)
-        <a type="button" title="Edit" onclick="location.href='{{ $downloadUrl }}'" class="btn btn-success edit-btn btn-action btn-no-radius btn-square">
+    @if ($hasDownload)
+        <a type="button" title="Edit" onclick="location.href='{{ $downloadUrl }}'"
+            class="btn btn-success edit-btn btn-action btn-no-radius btn-square">
             <i class="fa fa fa-download" aria-hidden="true" style="margin-right: 0;"></i>
         </a>
     @endif
 
-    @if(!$noEdit)
-        <a type="button" title="Edit" onclick="location.href='{{ $edit }}'" class="btn btn-primary edit-btn btn-action btn-no-radius btn-square">
+
+    @if ($assignOccupant)
+        <a type="button" title="Edit" onclick="location.href='{{ $occupant }}'"
+            class="btn btn-success edit-btn btn-action btn-no-radius btn-square">
+            <i class="fa fa fa-user" aria-hidden="true" style="margin-right: 0;"></i>
+        </a>
+    @endif
+
+    @if ($viewUnit)
+        <a type="button" title="Edit" onclick="location.href='{{ $viewRoute }}'"
+            class="btn btn-success edit-btn btn-action btn-no-radius btn-square">
+            <i class="fa fa fa-eye" aria-hidden="true" style="margin-right: 0;"></i>
+        </a>
+    @endif
+
+
+    @if (!$noEdit)
+        <a type="button" title="Edit" onclick="location.href='{{ $edit }}'"
+            class="btn btn-primary edit-btn btn-action btn-no-radius btn-square">
             <i class="icon-pencil"></i>
         </a>
     @endif
 
     {!! $slot !!}
 
-    @if($delete && (!$noDelete))
-        <a type="button" title="Delete" class="btn btn-danger del-btn btn-action btn-no-radius btn-square" data-bs-toggle="modal" data-bs-target="#deleteConfirm-{{ $entityId }}">
+    @if ($delete && !$noDelete)
+        <a type="button" title="Delete" class="btn btn-danger del-btn btn-action btn-no-radius btn-square"
+            data-bs-toggle="modal" data-bs-target="#deleteConfirm-{{ $entityId }}">
             <i class="icon-trash" aria-hidden="true"></i>
         </a>
     @endif
@@ -43,11 +66,11 @@
 <x-delete-confirm-modal :action="$delete" :entity-id="$entityId">
     <div class="mt-2">
         <p class="text-sm text-gray-500">
-        @if ($deleteMsg)
-            {{ $deleteMsg }}
-        @else
-            Are you sure you want to delete <u>{{ $name }}</u>?
-        @endif
+            @if ($deleteMsg)
+                {{ $deleteMsg }}
+            @else
+                Are you sure you want to delete <u>{{ $name }}</u>?
+            @endif
         </p>
     </div>
 </x-delete-confirm-modal>

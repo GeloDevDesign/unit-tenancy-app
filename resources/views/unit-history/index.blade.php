@@ -32,6 +32,7 @@
                                     <th>Occupant Type</th>
                                     <th>Occupant</th>
                                     <th>Status</th>
+                                    <th>Move in</th>
                                     <th>Tenant Manager</th>
                                     <th>Action</th>
                                 </tr>
@@ -82,7 +83,9 @@
 
                                         </td>
 
-
+                                        <td>
+                                            {{ $unit->histories[0]->move_in }}
+                                        </td>
 
                                         <td class="table-td">
                                             {{ $unit->tenantManager->first_name . ' ' . $unit->tenantManager->last_name }}

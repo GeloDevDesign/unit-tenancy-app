@@ -23,5 +23,10 @@ class GeneralSettingSeeder extends Seeder
                 'maintenance_mode' => 0
             ]
         ]);
+        
+
+        
+
+        
     }
 }

@@ -4,7 +4,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Property\PropertyController;
 
-Route::middleware(['role:property_manager'])
+Route::middleware(['role:property_manager,admin'])
   ->name('property.')
   ->prefix('property')
   ->group(function () {

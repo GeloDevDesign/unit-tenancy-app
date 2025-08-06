@@ -7,10 +7,13 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use App\Models\ServiceRequest;
 use App\Models\Amenity;
 use App\Models\Property;
 use App\Models\User;
+use App\Models\HistoryUnit;
+
 
 class Unit extends Model
 {
@@ -36,6 +39,17 @@ class Unit extends Model
     }
 
 
+    public function occupied(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'occupant_id');
+    }
+
+    public function histories()
+    {
+        return $this->hasMany(HistoryUnit::class, 'unit_id');
+    }
+
+
     public function serviceRequests(): HasMany
     {
         return $this->hasMany(ServiceRequest::class);
@@ -48,13 +62,16 @@ class Unit extends Model
     }
 
 
+    public function latestHistory()
+    {
+        return $this->hasOne(HistoryUnit::class)->latestOfMany('move_in');
+    }
+
+
     public function tenantManager()
     {
         return $this->belongsTo(User::class, 'tenant_manager_id');
     }
-
-
-
 
     public function property(): BelongsTo
     {

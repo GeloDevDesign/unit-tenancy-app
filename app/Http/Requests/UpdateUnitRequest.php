@@ -23,7 +23,6 @@ class UpdateUnitRequest extends FormRequest
     { {
             return [
                 'tenant_manager' => 'required|exists:users,id',
-                'occupant_id' => 'nullable|numeric|exists:users,id',
                 'property_id' => 'required|exists:properties,id',
                 'unit_number' => [
                     'required',
@@ -32,7 +31,6 @@ class UpdateUnitRequest extends FormRequest
                     'unique:units,unit_number',
                     'regex:/^[0-9]+$/'
                 ],
-                'building' => 'required|string|exists:properties,building',
                 'floor' => 'required|integer|min:0',
                 'capacity_count' => 'required|integer|min:1',
                 'sqm_size' => 'required|numeric|min:1|max:99999.99'

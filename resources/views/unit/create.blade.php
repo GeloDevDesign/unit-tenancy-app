@@ -17,7 +17,7 @@
 @endsection
 
 @section('content')
-    <x-card :heading="'Unit Form'">
+    <x-card :heading="'Create New Unit Form'">
         @include('unit.form', [
             'unit' => new \App\Models\Unit(),
             'action' => route('unit.store'),

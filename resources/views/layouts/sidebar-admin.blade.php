@@ -121,16 +121,8 @@
 
                 @if (authUser()->isTenant())
                     <li class="nav-item">
-                        <a href="" class="nav-link {{ isActiveMenu(['admin.index']) }}">
-                            <i class="ph-house"></i>
-                            <span>
-                                Dashboard
-                            </span>
-                        </a>
-                    </li>
-
-                    <li class="nav-item">
-                        <a href="" class="nav-link {{ isActiveMenu(['admin.index']) }}">
+                        <a href="{{ route('occupant.index') }}"
+                            class="nav-link {{ isActiveMenu(['occupant.index']) }}">
                             <i class="ph-buildings"></i>
                             <span>
                                 Rent Unit Info
@@ -334,7 +326,8 @@
                             <span>Units</span>
                         </a>
                         <ul class="nav-group-sub collapse">
-                            <li class="nav-item"><a href="{{ route('unit.index') }}" class="nav-link">Unit List</a></li>
+                            <li class="nav-item"><a href="{{ route('unit.index') }}" class="nav-link">Unit List</a>
+                            </li>
                             <li class="nav-item"><a href="" class="nav-link">Rental Records</a></li>
                             <li class="nav-item"><a href="" class="nav-link">Damage Reports</a></li>
                         </ul>

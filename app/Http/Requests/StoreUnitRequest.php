@@ -31,7 +31,6 @@ class StoreUnitRequest extends FormRequest
                 'unique:units,unit_number',
                 'regex:/^[0-9]+$/'
             ],
-            'building' => 'required|string|exists:properties,building',
             'floor' => 'required|integer|min:0',
             'capacity_count' => 'required|integer|min:1',
             'sqm_size' => 'required|numeric|min:1|max:99999.99'

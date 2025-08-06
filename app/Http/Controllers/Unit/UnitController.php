@@ -11,12 +11,19 @@ use App\Models\GeneralSetting;
 use App\Http\Requests\StoreUnitRequest;
 use App\Http\Requests\UpdateUnitRequest;
 use Illuminate\Validation\Rule;
+use App\Models\HistoryUnit;
+use Carbon\Carbon;
+
+
 
 class UnitController extends Controller
 {
     public function index(Request $request)
     {
-        $query = Unit::with(['property', 'tenantManager', 'occupant']);
+
+        $query = Unit::with(['property', 'tenantManager', 'occupant', 'latestHistory']);
+
+
 
         if ($search = $request->input('search')) {
             $query->where('unit_number', 'like', '%' . $search . '%')
@@ -50,8 +57,7 @@ class UnitController extends Controller
             ->get(['id', 'first_name', 'last_name', 'email']);
 
         $properties = Property::with('user')
-            ->get(['id', 'name'])
-            ->unique('name')
+            ->get(['id', 'name', 'building'])
             ->values();
 
         $buildingNumber = Property::with('user')->get(['id', 'building']);
@@ -61,11 +67,9 @@ class UnitController extends Controller
 
     public function store(StoreUnitRequest $request)
     {
-
         $validated = $request->only([
             'tenant_manager',
             'unit_number',
-            'building',
             'floor',
             'capacity_count',
             'sqm_size',
@@ -73,20 +77,18 @@ class UnitController extends Controller
         ]);
 
         $nextUnitNumber = $this->getNextUnitNumber();
+        $property = $request->user()->properties()->findOrFail($validated['property_id']);
 
         $paddedUnitNumber = str_pad($nextUnitNumber, 5, '0', STR_PAD_LEFT);
-        $unitNumber = "{$validated['floor']}-{$paddedUnitNumber}-{$validated['building']}";
+        $unitNumber = "{$validated['floor']}-{$paddedUnitNumber}-{$property->building}";
 
         if (Unit::where('unit_number', $unitNumber)->exists()) {
             return back()->withErrors(['unit_number' => 'The generated unit number already exists.'])->withInput();
         }
 
-        $property = $request->user()->properties()->findOrFail($validated['property_id']);
-
         $unit = $property->units()->create([
             'tenant_manager_id' => $validated['tenant_manager'],
-            'unit_number' => $unitNumber,
-            'building' => $validated['building'],
+            'unit_number' => $unitNumber, // ✅ Use the actual generated number
             'floor' => $validated['floor'],
             'capacity_count' => $validated['capacity_count'],
             'sqm_size' => $validated['sqm_size']
@@ -94,6 +96,7 @@ class UnitController extends Controller
 
         return to_route('unit.index')->withSuccess('Unit has been created successfully.');
     }
+
 
 
 
@@ -110,34 +113,103 @@ class UnitController extends Controller
         // Get the middle part (ID number) and remove leading zeros
         $unformattedId = ltrim($parts[1], '0'); // from "00002" ➜ "2"
 
-        $nextUnitNumber = $this->getNextUnitNumber();
-
         $tenantManagers = User::with('roles')
             ->whereHas('roles', fn($q) => $q->where('name', 'tenant_manager'))
             ->get(['id', 'first_name', 'last_name', 'email']);
 
         $properties = Property::with('user')
-            ->get(['id', 'name'])
-            ->unique('name')
-            ->values();
+            ->get(['id', 'name', 'building']);
 
-        $ownersAndTenants  = User::with('roles')
-            ->whereHas('roles', fn($q) => $q->whereIn('name', ['tenant', 'owner']))
-            ->get(['id', 'first_name', 'last_name', 'email']);
 
         $buildingNumber = Property::with('user')->get(['id', 'building']);
 
         return view('unit.edit', compact(
             'unit',
             'title',
-            'nextUnitNumber',
             'buildingNumber',
-            'tenantManagers',
             'properties',
             'unformattedId',
+            'tenantManagers'
+        ));
+    }
+
+
+    public function show_occupant(Request $request, Unit $unit)
+    {
+
+        $title = 'Edit Unit Occupant';
+
+        $ownersAndTenants  = User::with('roles')
+            ->whereHas('roles', fn($q) => $q->whereIn('name', ['tenant', 'owner']))
+            ->get(['id', 'first_name', 'last_name', 'email']);
+
+        return view('unit.edit-occupant', compact(
+            'unit',
+            'title',
             'ownersAndTenants'
         ));
     }
+
+
+    public function occupant_update(Request $request, Unit $unit)
+    {
+        $validated = $request->validate([
+            'occupant_id' => 'nullable|exists:users,id',
+            'status' => 'required|in:move_in,move_out',
+            'move_date' => 'required|date',
+        ]);
+
+        // Format date: mm/dd/yyyy to yyyy-mm-dd
+        $formattedDate = Carbon::createFromFormat('m/d/Y', $validated['move_date'])->format('Y-m-d');
+
+        // Check if the user is trying to move in but the unit is already occupied
+        if ($unit->occupied && $validated['status'] === 'move_in') {
+            return back()->withErrors(['status' => 'This unit is already occupied.'])->withInput();
+        }
+
+        if ($validated['status'] === 'move_in' && $validated['occupant_id'] && !$unit->occupant) {
+            // Fetch role of the new occupant (not the current occupant)
+            $newOccupant = User::find($validated['occupant_id']);
+            $newOccupantRole = $newOccupant?->roles()->pluck('name')->first() ?? 'no role';
+
+            // Update unit to assign new occupant
+            $unit->update([
+                'occupant_id' => $validated['occupant_id'],
+                'occupant_type' => $newOccupantRole,
+                'status' => 'occupied',
+            ]);
+
+            // Create move-in history
+            $unit->histories()->create([
+                'occupant_id' => $validated['occupant_id'],
+                'move_in' => $formattedDate,
+                'move_out' => null,
+                'status' => 'move_in',
+            ]);
+        } else {
+            // Get previous occupant role before clearing it
+            $previousOccupantRole = $unit->occupant?->roles()->pluck('name')->first() ?? 'no occupant';
+
+            // Create move-out history
+            $unit->histories()->create([
+                'occupant_id' => $validated['occupant_id'],
+                'move_in' => null,
+                'move_out' => $formattedDate,
+                'status' => 'move_out',
+            ]);
+
+            // Clear occupant from the unit
+            $unit->update([
+                'occupant_id' => null,
+                'occupant_type' => $previousOccupantRole,
+                'status' => 'available',
+            ]);
+        }
+
+        return to_route('unit.index')->withSuccess('Unit updated successfully.');
+    }
+
+
 
 
     /**
@@ -147,34 +219,24 @@ class UnitController extends Controller
     {
         $validated = $request->only([
             'tenant_manager',
+            'property_id',
             'unit_number',
-            'building',
             'floor',
             'capacity_count',
-            'sqm_size',
-            'occupant_id'
+            'sqm_size'
         ]);
 
-        if (!empty($validated['occupant_id'])) {
-            $newOccupantRole = optional(User::find($validated['occupant_id']))
-                ->roles()
-                ->pluck('name')
-                ->first();
-        } else {
-            $validated['occupant_id'] = null;
-            $newOccupantRole = null;
-        }
-
+        // Get the property and its building
+        $property = $request->user()->properties()->findOrFail($validated['property_id']);
 
         // Format unit number as: floor-00001-building
         $paddedUnitId = str_pad($validated['unit_number'], 5, '0', STR_PAD_LEFT);
-        $unitNumber = "{$validated['floor']}-{$paddedUnitId}-{$validated['building']}";
+        $unitNumber = "{$validated['floor']}-{$paddedUnitId}-{$property->building}";
 
-        // Check for duplicate unit number, excluding current unit
+        // Check for duplicate unit number, excluding the current unit
         $exists = Unit::where('unit_number', $unitNumber)
             ->where('id', '!=', $unit->id)
             ->exists();
-
 
         if ($exists) {
             return back()->withErrors([
@@ -182,22 +244,18 @@ class UnitController extends Controller
             ])->withInput();
         }
 
-        // Update the unit
         $unit->update([
             'tenant_manager_id' => $validated['tenant_manager'],
             'unit_number' => $unitNumber,
-            'building' => $validated['building'],
+            'building' => $property->building,
             'floor' => $validated['floor'],
             'capacity_count' => $validated['capacity_count'],
             'sqm_size' => $validated['sqm_size'],
-            'occupant_id' => $validated['occupant_id'] ?? null,
-            'occupant_type' => $newOccupantRole ?? 'no occupant',
-            'status' => $newOccupantRole ? 'occupied' : 'available'
         ]);
-
 
         return to_route('unit.index')->withSuccess('Unit updated successfully.');
     }
+
 
 
 

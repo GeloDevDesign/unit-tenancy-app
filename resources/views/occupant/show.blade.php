@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('banner')
-    <x-banner :current-page="'Create User'"></x-banner>
+    <x-banner :current-page="'Create New Property'"></x-banner>
 @endsection
 
 @section('styles')
@@ -17,10 +17,10 @@
 @endsection
 
 @section('content')
-    <x-card :heading="'Edit Property Form'">
-        @include('property-manager.form', [
-            'property' => $property,
-            'action' => route('property.update', ['property' => $property]),
+    <x-card :heading="'Unit Information'">
+        @include('occupant.form', [
+            'unit' => $unit,
+            'action' => null,
         ])
 
     </x-card>
